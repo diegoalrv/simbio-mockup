@@ -10,7 +10,7 @@
   --dark:#1d2132; --darker:#101425; --panel:#242838; --secondary:#393d4b; --line:#2f3345;
   --primary:#009ecb; --primary-dk:#007899; --info-bg:#d1ecf1; --info-tx:#0c5460; --info-bd:#bee5eb;
   --danger:#e94860; --warning:#ffc107; --success:#28a745;
-  --text:#fff; --muted:rgba(255,255,255,.6); --muted2:rgba(255,255,255,.45);
+  --text:#fff; --muted:rgba(255,255,255,.6); --muted2:rgba(255,255,255,.62);
   --input-bg:#fff; --input-tx:#495057; --input-bd:#ced4da;
   --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
 }
@@ -41,11 +41,6 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:var(--pr
 .alert-info{background:var(--info-bg);color:var(--info-tx);border:1px solid var(--info-bd);border-radius:4px;padding:12px 20px;font-size:14px;line-height:1.5;margin-bottom:16px}
 
 /* Nivel */
-.levelbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;font-size:13px;color:var(--muted)}
-.levelbar b{color:#fff;font-weight:500}
-.levelbar .seg{display:flex;border:1px solid var(--secondary);border-radius:4px;overflow:hidden}
-.levelbar .seg button{border:0;background:transparent;padding:6px 12px;font-size:13px;color:var(--primary)}
-.levelbar .seg button.on{background:var(--primary);color:#fff}
 body.only-n1 .n2{display:none!important}
 .lvline{font-size:13px;color:var(--muted);margin-bottom:12px}.lvline b{color:#fff;font-weight:500}.lvline a{cursor:pointer;margin-left:8px}
 .howto{counter-reset:h;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -67,7 +62,6 @@ body.only-n1 .n2{display:none!important}
 .step.active{color:#fff;font-weight:500}.step.active .n{background:var(--primary);border-color:var(--primary);color:#fff}
 .step.done{color:rgba(255,255,255,.8)}.step.done .n{background:var(--primary-dk);border-color:var(--primary-dk);color:#fff}
 .sep{height:1px;background:var(--secondary);flex:1;min-width:10px}
-.layout{display:block}.side{display:none}
 
 /* Tarjetas (en SIMBIO las fichas no tienen fondo propio) */
 .card{border:1px solid var(--line);border-radius:4px;margin-bottom:18px;background:transparent}
@@ -77,6 +71,7 @@ body.only-n1 .n2{display:none!important}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .full{grid-column:1/-1}
 .field label{display:block;font-size:14px;font-weight:500;margin-bottom:6px;color:#fff}
+.field label.check{display:flex;font-weight:400;margin:0}
 .req{color:var(--danger);margin-left:3px}.opt{font-weight:400;color:var(--muted2);margin-left:4px;font-size:12px}
 input,select,textarea{width:100%;border:1px solid var(--input-bd);border-radius:3.2px;padding:6px 10px;background:var(--input-bg);color:var(--input-tx);outline:none;font-size:14px}
 input:focus,select:focus,textarea:focus{border-color:#80bdff;box-shadow:0 0 0 .2rem rgba(0,158,203,.25)}
@@ -148,9 +143,9 @@ td select{padding:3px 6px;font-size:13px}
 /* Pie SIMBIO */
 .site-footer{background:var(--darker);color:#fff;padding:20px 0 10px;margin-top:40px;font-size:13px}
 .site-footer .inner{max-width:1140px;margin:0 auto;padding:0 16px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-.site-footer .inner p{margin:0;line-height:1.6}.site-footer .mini{color:#6d6d6d;font-size:12px;text-align:right}
+.site-footer .inner p{margin:0;line-height:1.6}.site-footer .mini{color:#9a9ea8;font-size:12px;text-align:right}
 
-@media(max-width:900px){.grid,.grid.three{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.stepper{overflow:auto}.navbar-inner .nl:not(.active){display:none}.navsearch input{width:130px}.brandbar{flex-direction:column;gap:6px}.brandbar h3{font-size:20px}.pagehead .back{position:static;display:inline-block;margin-top:6px}}
+@media(max-width:900px){.card-body table{display:block;overflow-x:auto;white-space:nowrap}.grid,.grid.three{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.stepper{overflow:auto}.navbar-inner .nl:not(.active){display:none}.navsearch input{width:130px}.brandbar{flex-direction:column;gap:6px}.brandbar h3{font-size:20px}.pagehead .back{position:static;display:inline-block;margin-top:6px}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -162,7 +157,7 @@ td select{padding:3px 6px;font-size:13px}
 </div>
 <div class="navbar"><div class="navbar-inner">
   <a class="nl" href="#">Inicio</a><a class="nl dd active" href="#">Temáticas</a><a class="nl" href="#">Geoportal</a><a class="nl" href="#">Indicadores</a><a class="nl" href="#">Ayuda</a>
-  <div class="navsearch"><input placeholder="Ingrese sus términos..."><button>⌕</button></div>
+  <div class="navsearch"><input placeholder="Ingrese sus términos..."><button aria-label="Buscar">⌕</button></div>
   <span class="navicon">☾</span><a class="nl" href="#">Ingresar</a>
 </div></div>
 <div class="container">
@@ -173,7 +168,7 @@ td select{padding:3px 6px;font-size:13px}
   </div>
   <div class="alert-info">Esta es una maqueta navegable del módulo de Restauración Ecológica propuesto en el Producto 2. Los datos son de ejemplo; los campos marcados con ⚙ se calculan por geoproceso y la validación institucional ocurre antes de publicar.</div>
 
-  <div class="lvline" id="lvline" style="display:none">Nivel de la ficha seleccionado: <b id="lvName">Nivel 1 · Básico (obligatorio)</b><a onclick="showStep(0)">cambiar</a></div>
+  <div class="lvline" id="lvline" style="display:none">Nivel de la ficha seleccionado: <b id="lvName">Nivel 1 · Básico (obligatorio)</b><a href="#" onclick="showStep(0);return false">cambiar</a></div>
   <div class="stepper">
     <div class="step active" data-step="0"><span class="n">0</span> Instrucciones</div><div class="sep"></div>
     <div class="step" data-step="1"><span class="n">1</span> Iniciativa</div><div class="sep"></div>
@@ -183,17 +178,7 @@ td select{padding:3px 6px;font-size:13px}
     <div class="step" data-step="5"><span class="n">5</span> Revisar y enviar</div>
   </div>
 
-  <div class="layout">
-    <aside class="side">
-      <div class="side-title">Ficha de la iniciativa</div>
-      <div class="side-item" data-nav="0"><span class="num">0</span><div><b>Instrucciones</b><br><small>Cómo llenar la ficha</small></div></div>
-      <div class="side-item active" data-nav="1"><span class="num">1</span><div><b>Identificación</b><br><small>Datos generales y gestión</small></div></div>
-      <div class="side-item" data-nav="2"><span class="num">2</span><div><b>Unidades de Restauración (UR)</b><br><small>Delimitación espacial</small></div></div>
-      <div class="side-item" data-nav="3"><span class="num">3</span><div><b>Dimensiones de la UR</b><br><small>5 dimensiones de información</small></div></div>
-      <div class="side-item" data-nav="4"><span class="num">4</span><div><b>Monitoreo</b><br><small>Eventos e indicadores</small></div></div>
-      <div class="side-item" data-nav="5"><span class="num">5</span><div><b>Validación</b><br><small>Revisión antes de publicar</small></div></div>
-      <div style="padding:15px 17px"><div style="font-size:11px;color:#738184;margin-bottom:7px">COMPLETITUD</div><div class="progressbar"><span id="prog"></span></div><div style="font-size:11px;margin-top:6px;color:#738184" id="progText">68% · borrador</div></div>
-    </aside>
+  <div>
 
     <main>
       <!-- STEP 0 -->
@@ -206,8 +191,8 @@ td select{padding:3px 6px;font-size:13px}
               <li><div><b>Elija el nivel de la ficha</b><small>Más abajo. El <b>Nivel 1</b> es el registro básico obligatorio; el <b>Nivel 2</b> agrega profundización facultativa. Puede empezar en Nivel 1 y completar el Nivel 2 después.</small></div></li>
               <li><div><b>Identifique la iniciativa</b><small>Nombre, responsable y organización, mandante y ejecutor con su tipo de entidad, período, estado de avance y alcance (si es parte de un programa, indique cuál).</small></div></li>
               <li><div><b>Delimite las Unidades de Restauración</b><small>Dibuje el polígono en el mapa o importe un GeoJSON. La superficie, región, comuna, cuenca, ecosistema y cruces territoriales se calculan automáticamente (⚙). Si cambia el ecosistema, la causa de degradación, la estrategia o el año de inicio, cree otra UR.</small></div></li>
-              <li><div><b>Caracterice cada UR en cinco dimensiones</b><small>1 Estrategia de intervención (ecosistema de referencia, estrategia, objeto, año) · 2 Socio-ecológico y gobernanza · 3 Diagnóstico de la degradación · 4 Actividades con superficie de aplicación · 5 Seguimiento.</small></div></li>
-              <li><div><b>Registre eventos de monitoreo</b><small>Cada medición es un evento: UR + fecha + indicador + valor + unidad + método + fuente. Los indicadores se calculan, no se declaran. Puede agregar eventos durante toda la vida de la UR.</small></div></li>
+              <li><div><b>Caracterice cada UR en cinco dimensiones</b><small>1 Estrategia de intervención (ecosistema de referencia, estrategia, objeto, año) · 2 Socio-ecológico y gobernanza (solo en Nivel 1+2) · 3 Diagnóstico de la degradación · 4 Actividades con superficie de aplicación · 5 Seguimiento.</small></div></li>
+              <li><div><b>Registre eventos de monitoreo</b><small>Cada medición es un evento: UR + fecha + indicador + valor + unidad + método + fuente. Los indicadores agregados (regional, nacional, FERM) se calculan a partir de los eventos registrados. Puede agregar eventos durante toda la vida de la UR.</small></div></li>
               <li><div><b>Revise y envíe a validación</b><small>Guarde borradores cuando quiera. Al enviar, un editor temático y luego un administrador revisan la ficha antes de publicarla en SIMBIO.</small></div></li>
             </ol>
           </div>
@@ -217,13 +202,13 @@ td select{padding:3px 6px;font-size:13px}
           <div class="card-head"><div><h2>Seleccione el nivel de la ficha <span class="req">*</span></h2><p>Esta elección define qué campos se muestran en los pasos siguientes. Puede cambiarla en cualquier momento desde la línea "Nivel de la ficha" o volviendo a esta ventana.</p></div></div>
           <div class="card-body">
             <div class="lvcards">
-              <div class="lvcard on" id="lvc1" onclick="setLevel(1)">
+              <div class="lvcard on" id="lvc1" role="button" tabindex="0" onclick="setLevel(1)" onkeydown="if(event.key==='Enter'||event.key===' ')setLevel(1)">
                 <h4>Nivel 1 · Básico (obligatorio)</h4>
                 <p>Registro rápido con la información indispensable para publicar y reportar al PNRP, Marco Global y FERM.</p>
                 <ul><li>Identificación, contacto y tipo de entidad</li><li>Polígono de la UR y campos derivados por geoproceso</li><li>Ecosistema de referencia, estrategia, objeto y año</li><li>Causa de degradación y actividades con superficie</li><li>Eventos de monitoreo</li></ul>
                 <div class="pick" id="lvp1">✓ Seleccionado</div>
               </div>
-              <div class="lvcard" id="lvc2" onclick="setLevel(2)">
+              <div class="lvcard" id="lvc2" role="button" tabindex="0" onclick="setLevel(2)" onkeydown="if(event.key==='Enter'||event.key===' ')setLevel(2)">
                 <h4>Nivel 1 + Nivel 2 · Profundización (facultativo)</h4>
                 <p>Agrega profundidad técnica y socio-ecológica. Recomendado para iniciativas con equipo técnico o financiamiento formal.</p>
                 <ul><li>Beneficiarios, tenencia, inversión, viabilidad</li><li>Estado objetivo y atributos opcionales del modelo SER</li><li>Dimensión socio-ecológica y de gobernanza completa</li><li>Potencial de regeneración</li></ul>
@@ -252,7 +237,7 @@ td select{padding:3px 6px;font-size:13px}
       <!-- STEP 1 -->
       <section class="page hidden" id="page1">
         <div class="card">
-          <div class="card-head"><div><h2>1. Identificación de la iniciativa</h2><p>Información del proyecto, programa o intervención.</p></div><span class="badge">Nivel: Iniciativa</span></div>
+          <div class="card-head"><div><h2>1. Identificación de la iniciativa</h2><p>Información del proyecto, programa o intervención.</p></div><span class="badge">Entidad: Iniciativa</span></div>
           <div class="card-body">
             <div class="info"><b>Diseño conceptual:</b> la Iniciativa es el nivel superior de gestión. La información ecológica y espacial del proyecto se registra en una o más Unidades de Restauración (UR).</div>
             <div class="grid">
@@ -265,16 +250,16 @@ td select{padding:3px 6px;font-size:13px}
               <div class="field"><label>Teléfono <span class="opt">opcional</span></label><input type="tel" placeholder="+56 9 …"></div>
               <div class="field"><label>Mandante <span class="req">*</span></label><input value="Municipalidad de Concepción"></div>
               <div class="field"><label>Ejecutor <span class="req">*</span></label><input value="Organización para la Restauración Local"></div>
-              <div class="field"><label>Tipo de entidad · mandante <span class="req">*</span></label><select><option selected>Institución pública</option><option>ONG</option><option>Empresa privada</option><option>Comunidad u organización comunitaria</option><option>Academia / investigación</option><option>Otro</option></select></div>
-              <div class="field"><label>Tipo de entidad · ejecutor <span class="req">*</span></label><select><option>Institución pública</option><option selected>ONG</option><option>Empresa privada</option><option>Comunidad u organización comunitaria</option><option>Academia / investigación</option><option>Otro</option></select><div class="help">Los registros de terceros se discriminan por tipo de entidad; no se amalgaman.</div></div>
-              <div class="field full"><label>Otro tipo de entidad, ¿cuál? <span class="opt">solo si corresponde</span></label><input placeholder="Especificar"></div>
+              <div class="field"><label>Tipo de entidad · mandante <span class="req">*</span></label><select id="tipoM" onchange="otroToggle()"><option selected>Institución pública</option><option>ONG</option><option>Empresa privada</option><option>Comunidad u organización comunitaria</option><option>Academia / investigación</option><option>Otro</option></select></div>
+              <div class="field"><label>Tipo de entidad · ejecutor <span class="req">*</span></label><select id="tipoE" onchange="otroToggle()"><option>Institución pública</option><option selected>ONG</option><option>Empresa privada</option><option>Comunidad u organización comunitaria</option><option>Academia / investigación</option><option>Otro</option></select><div class="help">Los registros de terceros se discriminan por tipo de entidad; no se amalgaman.</div></div>
+              <div class="field full" id="otroBox" style="display:none"><label>Otro tipo de entidad (mandante o ejecutor), ¿cuál? <span class="req">*</span></label><input placeholder="Especificar"></div>
               <div class="field"><label>Período de ejecución · inicio <span class="req">*</span></label><input id="fIni" type="date" value="2025-03-01" onchange="validate()"></div>
               <div class="field" id="fFinBox"><label>Período de ejecución · término <span class="opt">opcional</span></label><input id="fFin" type="date" onchange="validate()"><div class="errmsg">La fecha de término no puede ser anterior al inicio.</div></div>
-              <div class="field"><label>Estado de avance <span class="req">*</span></label><select><option>En planificación</option><option selected>En ejecución</option><option>Finalizada</option><option>Suspendida</option></select></div>
-              <div class="field"><label>Alcance <span class="req">*</span></label><select id="alc" onchange="alcToggle()"><option selected>Proyecto individual</option><option>Parte de un programa</option></select><div class="help">Proyecto acotado, o intervención que forma parte de un programa o marco de restauración mayor.</div></div>
-              <div class="field full" id="progBox" style="display:none"><label>Nombre del programa <span class="req">*</span></label><input placeholder="Programa, estrategia o marco de restauración al que pertenece la iniciativa"></div>
-              <div class="field n2"><label>Beneficiarios</label><textarea style="min-height:65px">Comunidades locales, organizaciones territoriales y propietarios del área de intervención.</textarea></div>
-              <div class="field n2"><label>Tenencia / propiedad · regularización de predios</label><textarea style="min-height:65px">Mixta: terrenos municipales y predios privados con acuerdos de intervención.</textarea></div>
+              <div class="field"><label>Estado de avance <span class="req">*</span></label><select><option>Planificada</option><option selected>En ejecución</option><option>Finalizada</option><option>Suspendida</option></select><div class="help">Estado de ejecución de la iniciativa. La completitud de la ficha se muestra en el paso 5.</div></div>
+              <div class="field"><label>Alcance <span class="req">*</span></label><select id="alc" onchange="alcToggle()"><option>Proyecto individual</option><option selected>Parte de un programa</option></select><div class="help">Proyecto acotado, o intervención que forma parte de un programa o marco de restauración mayor.</div></div>
+              <div class="field full" id="progBox" style="display:none"><label>Nombre del programa <span class="req">*</span></label><input value="Programa de restauración de paisajes costeros del Biobío" placeholder="Programa, estrategia o marco de restauración al que pertenece la iniciativa"></div>
+              <div class="field n2"><label>Beneficiarios <span class="opt">opcional</span></label><textarea style="min-height:65px">Comunidades locales, organizaciones territoriales y propietarios del área de intervención.</textarea></div>
+              <div class="field n2"><label>Tenencia / propiedad · regularización de predios <span class="opt">opcional</span></label><textarea style="min-height:65px">Mixta: terrenos municipales y predios privados con acuerdos de intervención.</textarea></div>
               
 
             </div>
@@ -297,11 +282,11 @@ td select{padding:3px 6px;font-size:13px}
             <div class="field full"><label>Aspiraciones comunitarias esperadas</label><div class="checkgrid"><label class="check"><input type="checkbox" checked> Culturales</label><label class="check"><input type="checkbox"> Productivas</label><label class="check"><input type="checkbox" checked> Recreativas</label><label class="check"><input type="checkbox"> Espirituales</label></div></div>
             <div class="field full"><label>Expectativas por edad / género</label><textarea style="min-height:65px"></textarea></div>
             <div class="field full"><div class="subsection-title" style="margin-top:0">Ficha de viabilidad</div></div>
-            <div class="field"><label>Viabilidad técnica</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
-            <div class="field"><label>Viabilidad económica</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
-            <div class="field"><label>Viabilidad social</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
-            <div class="field"><label>Viabilidad ambiental</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
-            <div class="field"><label>Viabilidad institucional</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
+            <div class="field"><label>Viabilidad técnica</label><select><option selected>Sin evaluar</option><option>Favorable</option><option>Con condiciones</option><option>No favorable</option></select></div>
+            <div class="field"><label>Viabilidad económica</label><select><option selected>Sin evaluar</option><option>Favorable</option><option>Con condiciones</option><option>No favorable</option></select></div>
+            <div class="field"><label>Viabilidad social</label><select><option selected>Sin evaluar</option><option>Favorable</option><option>Con condiciones</option><option>No favorable</option></select></div>
+            <div class="field"><label>Viabilidad ambiental</label><select><option selected>Sin evaluar</option><option>Favorable</option><option>Con condiciones</option><option>No favorable</option></select></div>
+            <div class="field"><label>Viabilidad institucional</label><select><option selected>Sin evaluar</option><option>Favorable</option><option>Con condiciones</option><option>No favorable</option></select></div>
             <div class="field full"><label>Condiciones habilitantes</label><textarea style="min-height:65px">Condiciones técnicas, económicas, sociales, ambientales e institucionales que permiten la implementación.</textarea></div>
           </div></div>
         </div>
@@ -309,9 +294,9 @@ td select{padding:3px 6px;font-size:13px}
           <div class="card-head"><div><h2>Ubicación general</h2><p>La ubicación detallada se define espacialmente mediante las UR.</p></div><span class="badge gray">Autocompletado por geoproceso</span></div>
           <div class="card-body">
             <div class="grid three">
-              <div class="field"><label>Región</label><select><option>Biobío</option></select></div>
-              <div class="field"><label>Provincia</label><select><option>Concepción</option></select></div>
-              <div class="field"><label>Comuna</label><select><option>Concepción</option></select></div>
+              <div class="field"><label>Región ⚙</label><select disabled><option>Biobío</option></select></div>
+              <div class="field"><label>Provincia ⚙</label><select disabled><option>Concepción</option></select></div>
+              <div class="field"><label>Comuna ⚙</label><select disabled><option>Concepción</option></select></div>
             </div>
             <div class="info" style="margin-top:16px;margin-bottom:0">Al crear la UR, el sistema puede sugerir automáticamente región, comuna, cuenca, ecosistema y otras capas territoriales mediante cruces espaciales. La asociación definitiva debe ser validada por el responsable.</div>
           </div>
@@ -337,35 +322,35 @@ td select{padding:3px 6px;font-size:13px}
           </div>
         </div>
         <div class="card">
-          <div class="card-head"><div><h2>UR-001 · Bosque costero</h2><p>Polígono homogéneo de intervención.</p></div><div><span class="badge">En edición</span> <button class="btn" onclick="toast('Se abriría la edición de la UR')">Editar</button></div></div>
+          <div class="card-head"><div><h2>UR-001 · Bosque esclerófilo costero</h2><p>Polígono homogéneo de intervención.</p></div><div><span class="badge">En edición</span> <button class="btn" onclick="toast('Se abriría la edición de la UR')">Editar</button></div></div>
           <div class="card-body">
             <div class="summary">
               <div class="metric"><strong data-ha="short">42,6 ha</strong><span>Superficie derivada</span></div>
-              <div class="metric"><strong>Terrestre</strong><span>Tipo de ecosistema</span></div>
-              <div class="metric"><strong>2025</strong><span>Año de inicio</span></div>
-              <div class="metric"><strong>Activa</strong><span>Vigencia</span></div>
+              <div class="metric"><strong data-ecotipo>Terrestre</strong><span>Tipo de ecosistema</span></div>
+              <div class="metric"><strong data-uryear>2025</strong><span>Año de inicio</span></div>
+              <div class="metric"><strong>Vigente</strong><span>Vigencia</span></div>
             </div>
             <div class="help" style="margin-bottom:10px">Los campos marcados con ⚙ se calculan automáticamente desde el polígono (<span class="badge gray">Autocompletado por geoproceso</span>).</div>
             <div class="grid three">
               <div class="field"><label>ID UR</label><input value="UR-001" disabled></div>
               <div class="field"><label>Superficie (ha) ⚙</label><input value="42,6" data-ha disabled></div>
-              <div class="field"><label>Año de inicio</label><input value="2025" type="number" disabled><div class="help">Se registra en la Dimensión 1.</div></div>
-              <div class="field"><label>Ecosistema ⚙ <span class="opt">sugerido, editable</span></label><select><option>Bosque caducifolio costero</option><option selected>Bosque esclerófilo costero</option><option>Matorral arborescente esclerófilo</option><option>Humedal costero</option><option>Otro piso de vegetación…</option></select><div class="help">Clasificación oficial: Ecosistemas Terrestres de Chile (pisos de vegetación). Sugerido por cruce espacial; el responsable valida.</div></div>
+              <div class="field"><label>Año de inicio</label><input value="2025" type="number" data-uryear disabled><div class="help">Se registra en la Dimensión 1.</div></div>
+              <div class="field"><label>Ecosistema ⚙ <span class="opt">sugerido, editable</span></label><select id="urEco" onchange="ecoSync()"><option data-tipo="Terrestre">Bosque caducifolio costero</option><option selected data-tipo="Terrestre">Bosque esclerófilo costero</option><option data-tipo="Terrestre">Matorral arborescente esclerófilo</option><option data-tipo="Humedal">Humedal costero</option><option data-tipo="Marino">Ecosistema marino costero</option><option data-tipo="Terrestre">Otro piso de vegetación…</option></select><div class="help">Clasificación oficial según el módulo SIMBIO correspondiente (Ecosistemas Terrestres de Chile, Ecosistemas Marinos o Humedales). Sugerido por cruce espacial; el responsable valida. Este valor alimenta la Dimensión 1.</div></div>
               <div class="field"><label>Región ⚙</label><select disabled><option>Biobío</option></select></div>
               <div class="field"><label>Comuna ⚙</label><select disabled><option>Concepción</option></select></div>
               <div class="field"><label>Cuenca ⚙</label><select disabled><option>Río Biobío</option></select><div class="help">Cuencas oficiales DGA.</div></div>
               <div class="field"><label>Estado de la UR <span class="req">*</span></label><select><option>Planificada</option><option selected>En ejecución</option><option>Finalizada</option><option>Suspendida</option></select></div>
-              <div class="field"><label>Última actualización de los datos</label><input type="date" value="2026-08-14"></div>
+              <div class="field"><label>Última actualización de los datos <span class="opt">opcional</span></label><input type="date" value="2026-08-14"></div>
               <div class="field"><label>Vigencia de la información <span class="req">*</span></label><select><option selected>Vigente</option><option>Por revisar</option><option>Desactualizada</option></select><div class="help">Vigencia ≠ actualización: un dato puede haberse actualizado y no seguir vigente.</div></div>
             </div>
             <div class="subsection-title">Cruces territoriales derivados (geoproceso)</div>
             <div class="grid three">
-              <div class="field"><label>Paisajes de restauración (PNRP)</label><input value="Paisaje de restauración Nahuelbuta–Biobío · 38,1 ha (89%)" disabled></div>
-              <div class="field"><label>Zonificación del paisaje</label><input value="Zona de conservación y restauración" disabled></div>
-              <div class="field"><label>Designaciones territoriales</label><input value="Sin superposición" disabled></div>
+              <div class="field"><label>Paisajes de restauración (PNRP) ⚙</label><input value="Paisaje de restauración Nahuelbuta–Biobío · 37,9 ha (89%)" data-ha="pnrp" disabled></div>
+              <div class="field"><label>Zonificación del paisaje ⚙</label><input value="Zona de conservación y restauración" disabled></div>
+              <div class="field"><label>Designaciones territoriales ⚙</label><input value="Sin superposición" disabled></div>
             </div>
             <div class="help" style="margin-top:8px">Calculados automáticamente desde el polígono; no se ingresan a mano. Se verifica además que la UR no se solape con UR de otros titulares.</div>
-            <div style="margin-top:15px"><button class="btn primary" onclick="toast('Nueva UR agregada al borrador')">＋ Agregar otra Unidad de Restauración</button></div>
+            <div style="margin-top:15px"><button class="btn primary" onclick="toast('Demo: se abriría el formulario de una nueva UR (UR-002)')">＋ Agregar otra Unidad de Restauración</button></div>
           </div>
         </div>
       </section>
@@ -378,9 +363,9 @@ td select{padding:3px 6px;font-size:13px}
           <div class="card-head">
             <div>
               <h2>3. Caracterización de la Unidad de Restauración</h2>
-              <p>Complete la información de la UR según las cinco dimensiones del modelo conceptual.</p>
+              <p>Complete la información de la UR según las cinco dimensiones del modelo conceptual (la Dimensión 2 solo se muestra en Nivel 1+2).</p>
             </div>
-            <span class="badge">UR-001 · 42,6 ha</span>
+            <span class="badge" data-ha="badge">UR-001 · 42,6 ha</span>
           </div>
 
           <div class="dimtabs">
@@ -407,16 +392,16 @@ td select{padding:3px 6px;font-size:13px}
                 <div class="category-head"><span>ECOSISTEMA</span><strong>¿Sobre qué ecosistema se interviene?</strong></div>
                 <div class="grid">
                   <div class="field">
-                    <label>Ecosistema de SIMBIO <span class="req">*</span></label>
-                    <select><option>Bosque esclerófilo / bosque costero</option><option>Ecosistema marino</option><option>Humedal</option></select>
-                    <div class="help">Vinculado a los módulos existentes de Ecosistemas, Ecosistemas Marinos o Humedales. Puede ser sugerido por cruce espacial y validado por el responsable.</div>
+                    <label>Ecosistema de SIMBIO ⚙ <span class="req">*</span></label>
+                    <input data-eco value="Bosque esclerófilo costero" disabled>
+                    <div class="help">Vinculado a los módulos existentes de Ecosistemas, Ecosistemas Marinos o Humedales. Se toma del ecosistema validado en la UR (paso 2).</div>
                   </div>
                   <div class="field">
-                    <label>Tipo de ecosistema</label>
-                    <input value="Terrestre" disabled>
-                    <div class="help">Campo automático/derivado.</div>
+                    <label>Tipo de ecosistema ⚙</label>
+                    <input data-ecotipo value="Terrestre" disabled>
+                    <div class="help">Derivado del módulo de referencia: terrestre, marino o humedal.</div>
                   </div>
-                  <div class="field full"><label>Ecosistema de referencia <span class="req">*</span></label><textarea style="min-height:60px" placeholder="Ecosistema nativo que sirve de modelo para la restauración."></textarea><div class="help">Ecosistema nativo que sirve de modelo para la restauración (atributos SER: especies, estructura, condiciones físicas, funciones, intercambios, amenazas).</div></div>
+                  <div class="field full"><label>Ecosistema de referencia <span class="req">*</span></label><textarea style="min-height:60px" placeholder="Ecosistema nativo que sirve de modelo para la restauración.">Bosque esclerófilo costero maduro con dosel de peumo y boldo, sotobosque de quilo y helechos, sin presencia de especies exóticas invasoras.</textarea><div class="help">Ecosistema nativo que sirve de modelo para la restauración (atributos SER: especies, estructura, condiciones físicas, funciones, intercambios, amenazas).</div></div>
                   <div class="field full n2"><label>Estado objetivo <span class="opt">opcional</span></label><textarea style="min-height:60px" placeholder="Condición esperada al término de la iniciativa."></textarea><div class="help">Condición que la iniciativa espera alcanzar en su horizonte de ejecución. Puede ser un estado intermedio respecto del ecosistema de referencia.</div></div>
                   <div class="field full"><div class="subsection-title" style="margin-top:6px">Atributos del ecosistema de referencia (estándar SER)</div></div>
                   <div class="field">
@@ -424,11 +409,11 @@ td select{padding:3px 6px;font-size:13px}
                     <select id="refSrc" onchange="refToggle()"><option>Sitio de referencia en terreno</option><option>Registro histórico</option><option>Literatura</option><option>Modelo de vegetación potencial</option><option>Conocimiento local o indígena</option><option>Otra</option></select>
                   </div>
                   <div class="field">
-                    <label>Sitio(s) de referencia <span class="opt">condicional</span></label>
-                    <input id="refSite" placeholder="Nombre o descripción del sitio de referencia">
+                    <label>Sitio(s) de referencia <span class="req" id="refReq">*</span> <span class="opt">condicional</span></label>
+                    <input id="refSite" value="Fragmento conservado en la ladera sur del cerro Caracol (Parque Ecuador)" placeholder="Nombre o descripción del sitio de referencia">
                     <div class="help">Obligatorio cuando la fuente es un sitio de referencia en terreno.</div>
                   </div>
-                  <div class="field full n2"><div class="grid three"><div class="field"><label>Latitud <span class="opt">opcional</span></label><input type="number" step="0.000001" placeholder="-36.74 (WGS84)"></div><div class="field"><label>Longitud <span class="opt">opcional</span></label><input type="number" step="0.000001" placeholder="-72.99 (WGS84)"></div><div class="field"><label>&nbsp;</label><button class="btn" onclick="toast('Se abriría el mapa para marcar el sitio')">⌖ Marcar en mapa</button></div></div></div>
+                  <div class="field full n2"><div class="grid three"><div class="field"><label>Latitud <span class="opt">opcional</span></label><input class="refxy" type="number" step="0.000001" placeholder="-36.74 (WGS84)"></div><div class="field"><label>Longitud <span class="opt">opcional</span></label><input class="refxy" type="number" step="0.000001" placeholder="-72.99 (WGS84)"></div><div class="field"><label>&nbsp;</label><button class="btn" onclick="toast('Se abriría el mapa para marcar el sitio')">⌖ Marcar en mapa</button></div></div></div>
                   <div class="field">
                     <label>Ajuste por cambio climático <span class="req">*</span></label>
                     <select id="cc" onchange="ccToggle()"><option>Sí</option><option selected>No</option></select>
@@ -446,47 +431,47 @@ td select{padding:3px 6px;font-size:13px}
                   <div class="field full n2"><label>Observaciones sobre la composición <span class="opt">opcional</span></label><textarea style="min-height:50px"></textarea></div>
                   <div class="field">
                     <label>Diversidad estructural <span class="req">*</span><span class="tip" title="Atributo SER: organización física del ecosistema (estratos, cobertura, densidad, distribución espacial).">ⓘ</span></label>
-                    <textarea style="min-height:60px" placeholder="Estratos, cobertura, densidad y distribución espacial esperadas (p. ej. estratos arbóreo/arbustivo, cobertura de vegetación emergente en humedales, praderas o bancos en ecosistemas marinos)."></textarea>
+                    <textarea style="min-height:60px" placeholder="Estratos, cobertura, densidad y distribución espacial esperadas (p. ej. estratos arbóreo/arbustivo, cobertura de vegetación emergente en humedales, praderas o bancos en ecosistemas marinos).">Dosel arbóreo continuo (cobertura ≥ 70%), estrato arbustivo denso y regeneración natural distribuida de forma heterogénea.</textarea>
                   </div>
                   <div class="field">
                     <label>Amenazas a controlar <span class="req">*</span><span class="tip" title="Atributo SER &quot;ausencia de amenazas&quot;: presiones que deben estar controladas para que el ecosistema se recupere.">ⓘ</span></label>
-                    <textarea style="min-height:60px" placeholder="Presiones que deben estar controladas para alcanzar el ecosistema de referencia."></textarea><div class="help">Atributo SER "ausencia de amenazas".</div>
+                    <textarea style="min-height:60px" placeholder="Presiones que deben estar controladas para alcanzar el ecosistema de referencia.">Incendios de interfaz urbano-forestal, ingreso de ganado y expansión de aromo y pino.</textarea><div class="help">Atributo SER "ausencia de amenazas".</div>
                   </div>
                   <div class="field n2">
                     <label>Condiciones físicas <span class="opt">opcional</span><span class="tip" title="Atributo SER: sustrato, suelo, hidrología, topografía y microclima necesarios para el ecosistema de referencia.">ⓘ</span></label>
                     <textarea style="min-height:60px" placeholder="Suelo, hidrología, topografía y microclima objetivo."></textarea>
                   </div>
                   <div class="field n2">
-                    <label>Funciones ecosistémicas (atributo SER) <span class="opt">opcional</span><span class="tip" title="Procesos ecológicos del ecosistema: productividad, ciclado de nutrientes, regeneración, descomposición.">ⓘ</span></label>
+                    <label>Funciones ecosistémicas (atributo SER) <span class="opt">opcional</span><span class="tip" title="Atributo SER: procesos ecológicos del ecosistema (productividad, ciclado de nutrientes, regeneración, descomposición).">ⓘ</span></label>
                     <textarea style="min-height:60px" placeholder="Regeneración, ciclado de nutrientes, polinización, hábitat de fauna."></textarea><div class="help">Procesos ecológicos del ecosistema (p. ej. ciclado de nutrientes, regeneración). No confundir con los servicios ecosistémicos, que son los beneficios para las personas y se registran en Objeto de restauración.</div>
                   </div>
                   <div class="field full n2">
                     <label>Intercambios externos <span class="opt">opcional</span><span class="tip" title="Atributo SER: flujos e interacciones con el paisaje circundante (agua, propágulos, fauna, conectividad).">ⓘ</span></label>
                     <textarea style="min-height:60px" placeholder="Conectividad con ecosistemas vecinos, flujos de agua, dispersión de propágulos, movimiento de fauna."></textarea>
                   </div>
-                  <div class="field full"><div class="help">Los atributos anteriores corresponden al modelo de referencia de los estándares SER. <a href="#" onclick="toast('Se abriría el glosario del módulo');return false" style="color:var(--teal)">Ver glosario</a></div></div>
+                  <div class="field full"><div class="help">Los atributos anteriores corresponden al modelo de referencia de los estándares SER. <a href="#" onclick="toast('Se abriría el glosario del módulo');return false" style="color:var(--primary)">Ver glosario</a></div></div>
                 </div>
               </div>
 
               <div class="category-card">
-                <div class="category-head"><span>ESTRATEGIA</span><strong>Tipo de actividad recuperativa</strong></div>
-                <div class="choice-row">
-                  <button class="choice">Restauración pasiva</button>
-                  <button class="choice selected">Restauración activa</button>
-                  <button class="choice">Rehabilitación</button>
-                  <button class="choice">Recuperación</button>
+                <div class="category-head"><span>ESTRATEGIA</span><strong>Tipo de actividad recuperativa <span class="req">*</span></strong></div>
+                <div class="choice-row" role="group" aria-label="Tipo de actividad recuperativa">
+                  <button class="choice" title="Remoción o reducción de los factores de degradación para favorecer la regeneración natural, sin intervención directa sobre la composición.">Restauración pasiva</button>
+                  <button class="choice selected" title="Intervención directa para favorecer la recuperación: plantación, siembra o reintroducción de especies.">Restauración activa</button>
+                  <button class="choice" title="Recuperación de funciones y servicios ecosistémicos sin restablecer por completo la composición de referencia.">Rehabilitación</button>
+                  <button class="choice" title="Estabilización y recuperación de sitios severamente degradados, incluidos los sometidos a procesos extractivos.">Recuperación</button>
                 </div>
               </div>
 
               <div class="category-card">
-                <div class="category-head"><span>OBJETO</span><strong>Objeto de restauración</strong></div>
-                <div class="choice-row" id="objRow">
+                <div class="category-head"><span>OBJETO</span><strong>Objeto de restauración <span class="req">*</span></strong></div>
+                <div class="choice-row" id="objRow" role="group" aria-label="Objeto de restauración">
                   <button class="choice">Especies</button>
                   <button class="choice selected">Ecosistemas</button>
                   <button class="choice">Servicios ecosistémicos</button>
                 </div>
                 <div id="svcBlock" style="display:none;margin-top:12px">
-                  <div class="help" style="margin:0 0 4px">Listado tentativo basado en CICES — se reemplazará por la lista entregada por la contraparte. Pueden seleccionarse de forma agregada o desagregada.</div>
+                  <div class="help" style="margin:0 0 4px">Listado tentativo basado en CICES — se reemplazará por la lista entregada por la contraparte. Se presenta un listado resumido por categoría; la versión definitiva permitirá selección agregada o desagregada.</div>
                   <div class="subsection-title">Aprovisionamiento</div>
                   <div class="checkgrid"><label class="check"><input type="checkbox"> Alimentación</label><label class="check"><input type="checkbox"> Abastecimiento de materiales</label><label class="check"><input type="checkbox"> Energía</label><label class="check"><input type="checkbox"> Abastecimiento de agua</label></div>
                   <div class="subsection-title">Regulación y mantenimiento</div>
@@ -499,7 +484,7 @@ td select{padding:3px 6px;font-size:13px}
               <div class="category-card">
                 <div class="category-head"><span>TEMPORALIDAD</span><strong>Inicio de la intervención</strong></div>
                 <div class="grid three">
-                  <div class="field"><label>Año de inicio <span class="req">*</span></label><input value="2025" type="number"><div class="help">Inicio de la intervención en esta UR; puede ser posterior al inicio de la iniciativa (sección 1).</div></div>
+                  <div class="field"><label>Año de inicio <span class="req">*</span></label><input id="urYear" value="2025" type="number" oninput="yearSync()"><div class="help">Inicio de la intervención en esta UR; puede ser posterior al inicio de la iniciativa (sección 1).</div></div>
                 </div>
               </div>
             </div>
@@ -510,7 +495,7 @@ td select{padding:3px 6px;font-size:13px}
               <div class="dimension-banner">
                 <span class="dimension-number">2</span>
                 <div>
-                  <strong>Enfoque socio-ecológico y de gobernanza</strong>
+                  <strong>Enfoque socio-ecológico y de gobernanza <span class="badge yellow" style="margin-left:8px">Nivel 2 · facultativo</span></strong>
                   <small>Caracterizar la dimensión social, cultural y de gobernanza de la restauración.</small>
                 </div>
               </div>
@@ -635,11 +620,11 @@ td select{padding:3px 6px;font-size:13px}
 
               <div class="category-card">
                 <div class="category-head"><span>2.5</span><strong>Vulnerabilidad y resiliencia</strong></div>
-                <p class="category-description">Caracterizar amenazas socio-naturales, capacidades de adaptación y condiciones que favorecen la recuperación.</p>
+                <p class="category-description">Caracterizar amenazas socio-naturales y capacidades de adaptación.</p>
                 <div class="grid">
                   <div class="field full">
                     <label>Amenazas socio-naturales</label>
-                    <div class="help" style="margin:0 0 7px">Amenazas futuras que pueden afectar la recuperación (riesgo). Las causas de degradación actuales se registran en D3 Diagnóstico.</div>
+                    <div class="help" style="margin:0 0 7px">Amenazas futuras que pueden afectar la recuperación (riesgo). Las causas de degradación actuales se registran en la pestaña 3 · Diagnóstico.</div>
                     <div class="checkgrid">
                       <label class="check"><input type="checkbox" checked> Incendios</label>
                       <label class="check"><input type="checkbox" checked> Sequía</label>
@@ -674,29 +659,29 @@ td select{padding:3px 6px;font-size:13px}
                   <div class="field full">
                     <label>Causa de degradación dominante <span class="req">*</span></label>
                     <select id="cd" onchange="cdToggle()">
-                      <option>CD01 – Fragmentación de hábitat</option>
-                      <option selected>CD02 – Incendios</option>
-                      <option>CD03 – Sobreexplotación y extracción de biomasa</option>
-                      <option>CD04 – Sobrepastoreo</option>
-                      <option>CD05 – Especies exóticas invasoras</option>
-                      <option>CD06 – Cambio de uso de suelo</option>
-                      <option>CD07 – Erosión y degradación de suelos</option>
-                      <option>CD08 – Contaminación</option>
-                      <option>CD09 – Alteración del régimen hidrológico</option>
-                      <option>CD10 – Cambio climático</option>
-                      <option>CD11 – Plagas y patógenos</option>
-                      <option>CD12 – Acumulación de residuos</option>
-                      <option>CD13 – Otra</option>
+                      <option title="División y aislamiento de hábitats naturales.">CD01 – Fragmentación de hábitat</option>
+                      <option selected title="Pérdida o alteración de vegetación, suelo o hábitat producto del fuego.">CD02 – Incendios</option>
+                      <option title="Extracción de leña, madera u otros recursos por sobre la capacidad de regeneración.">CD03 – Sobreexplotación y extracción de biomasa</option>
+                      <option title="Presión de ganado que afecta la vegetación, el suelo o la regeneración.">CD04 – Sobrepastoreo</option>
+                      <option title="Presencia o expansión de especies introducidas que afectan componentes nativos.">CD05 – Especies exóticas invasoras</option>
+                      <option title="Conversión del ecosistema hacia usos agrícolas, urbanos, forestales u otros.">CD06 – Cambio de uso de suelo</option>
+                      <option title="Pérdida o deterioro de las propiedades del suelo.">CD07 – Erosión y degradación de suelos</option>
+                      <option title="Alteración de la calidad del suelo, agua o aire por contaminantes.">CD08 – Contaminación</option>
+                      <option title="Modificación de los flujos, niveles o disponibilidad natural de agua.">CD09 – Alteración del régimen hidrológico</option>
+                      <option title="Alteraciones asociadas a sequías, cambios de temperatura u otros efectos climáticos.">CD10 – Cambio climático</option>
+                      <option title="Daño o mortalidad de organismos producto de agentes biológicos.">CD11 – Plagas y patógenos</option>
+                      <option title="Acumulación de desechos en el ecosistema.">CD12 – Acumulación de residuos</option>
+                      <option title="Causa no contemplada en el catálogo. Requiere documentación.">CD13 – Otra</option>
                     </select>
-                    <div class="help">Selección desde vocabulario controlado para permitir comparación y agregación territorial.</div>
+                    <div class="help">Selección desde vocabulario controlado para permitir comparación y agregación territorial. Pase el cursor sobre cada opción para ver su definición.</div>
                   </div>
-                  <div class="field full"><label>Otra causa de degradación <span class="opt">se habilita con CD13</span></label><input id="cdOtra" disabled placeholder="Describir la causa no contemplada en el catálogo"></div>
-                  <div class="field full"><label>Evidencia / observación</label><textarea style="min-height:90px" placeholder="Antecedentes que respaldan la causa seleccionada."></textarea></div>
+                  <div class="field full"><label>Otra causa de degradación <span class="req" id="cdReq" style="display:none">*</span> <span class="opt">se habilita con CD13</span></label><input id="cdOtra" disabled placeholder="Describir la causa no contemplada en el catálogo"></div>
+                  <div class="field full"><label>Evidencia / observación <span class="opt">opcional</span></label><textarea style="min-height:90px" placeholder="Antecedentes que respaldan la causa seleccionada."></textarea></div>
                 </div>
               </div>
               <div class="category-card n2">
                 <div class="category-head"><span>3.2</span><strong>Potencial de regeneración</strong></div>
-                <div class="grid"><div class="field full"><label>Disponibilidad de propágulos / regeneración natural</label><textarea style="min-height:80px" placeholder="Disponibilidad de propágulos, regeneración natural y condiciones para sostener la recuperación."></textarea></div></div>
+                <div class="grid"><div class="field full"><label>Disponibilidad de propágulos / regeneración natural <span class="opt">opcional</span></label><textarea style="min-height:80px" placeholder="Disponibilidad de propágulos, regeneración natural y condiciones para sostener la recuperación."></textarea></div></div>
               </div>
             </div>
 
@@ -715,23 +700,24 @@ td select{padding:3px 6px;font-size:13px}
                 <table>
                   <thead><tr><th>Actividad</th><th>Superficie (ha)</th><th>Inicio</th><th>Término</th><th>Estado</th><th></th></tr></thead>
                   <tbody id="activityRows">
-                    <tr><td>AC02 – Contención de erosión</td><td>25,4</td><td>2025-04</td><td>2025-09</td><td><span class="badge">Ejecutada</span></td><td><button class="btn" onclick="toast('Actividad editada')">Editar</button></td></tr>
-                    <tr><td>AC07 – Exclusiones para desarrollo de vegetación natural</td><td>18,2</td><td>2025-06</td><td>—</td><td><span class="badge">En ejecución</span></td><td><button class="btn" onclick="toast('Actividad editada')">Editar</button></td></tr>
-                    <tr><td>AC09 – Control de especies invasoras</td><td>12,8</td><td>2025-08</td><td>—</td><td><span class="badge yellow">Planificada</span></td><td><button class="btn" onclick="toast('Actividad editada')">Editar</button></td></tr>
+                    <tr><td>AC02 – Contención de erosión</td><td>20,4</td><td>2025-04</td><td>2025-09</td><td><span class="badge">Ejecutada</span></td><td><button class="btn" onclick="toast('Actividad editada')">Editar</button></td></tr>
+                    <tr><td>AC07 – Exclusiones para desarrollo de vegetación natural</td><td>12,2</td><td>2025-06</td><td>—</td><td><span class="badge">En ejecución</span></td><td><button class="btn" onclick="toast('Actividad editada')">Editar</button></td></tr>
+                    <tr><td>AC09 – Control de especies invasoras</td><td>8,0</td><td>2026-11</td><td>—</td><td><span class="badge yellow">Planificada</span></td><td><button class="btn" onclick="toast('Actividad editada')">Editar</button></td></tr>
                   </tbody>
                 </table>
-                <div style="margin-top:13px"><button class="btn primary" onclick="addActivity()">＋ Agregar actividad</button></div>
+                <div class="help" style="margin-top:8px">La suma de superficies de aplicación no debería superar la superficie de la UR (<span data-ha="short">42,6 ha</span>); una misma hectárea puede recibir más de una actividad.</div>
               </div>
               <div class="category-card">
-                <div class="category-head"><span>CATÁLOGO</span><strong>Actividades disponibles</strong></div>
+                <div class="category-head"><span>4.2</span><strong>Nueva actividad</strong></div>
                 <div class="grid">
-                  <div class="field"><label>Actividad</label><select><option>AC01 – Prácticas productivas sostenibles</option><option>AC02 – Contención de erosión</option><option>AC03 – Producción de plantas nativas</option><option>AC04 – Colecta de germoplasma</option><option>AC05 – Rescate y reintroducción de fauna</option><option>AC06 – Mejoramiento de condiciones físicas, químicas y biológicas</option><option>AC07 – Exclusiones para desarrollo de vegetación natural</option><option>AC08 – Trabajo con comunidades locales</option><option>AC09 – Control de especies invasoras</option><option>AC10 – Recuperación de ecosistemas acuáticos</option><option>AC11 – Monitoreo de la respuesta ecológica</option><option>AC12 – Educación ambiental</option><option>AC13 – Otras actividades registrables</option><option>AC14 – Descripción del ecosistema de referencia</option></select></div>
-                  <div class="field"><label>Superficie de aplicación (ha) <span class="req">*</span></label><input type="number" value="10.0" step="0.1"></div>
-                  <div class="field"><label>Fecha de inicio</label><input type="date" value="2025-08-01"></div>
-                  <div class="field"><label>Fecha de término</label><input type="date"></div>
-                  <div class="field"><label>Estado de ejecución <span class="req">*</span></label><select><option>Planificada</option><option>En ejecución</option><option>Ejecutada</option><option>Suspendida</option></select></div>
-                  <div class="field"><label>Observaciones</label><input></div>
+                  <div class="field"><label>Actividad <span class="req">*</span></label><select id="actSel"><option>AC01 – Prácticas productivas sostenibles</option><option>AC02 – Contención de erosión</option><option>AC03 – Producción de plantas nativas</option><option>AC04 – Colecta de germoplasma</option><option>AC05 – Rescate y reintroducción de fauna</option><option>AC06 – Mejoramiento de condiciones físicas, químicas y biológicas</option><option>AC07 – Exclusiones para desarrollo de vegetación natural</option><option>AC08 – Trabajo con comunidades locales</option><option>AC09 – Control de especies invasoras</option><option>AC10 – Recuperación de ecosistemas acuáticos</option><option>AC11 – Monitoreo de la respuesta ecológica</option><option>AC12 – Educación ambiental</option><option>AC13 – Otras actividades registrables</option><option>AC14 – Descripción del ecosistema de referencia</option></select></div>
+                  <div class="field"><label>Superficie de aplicación (ha) <span class="req">*</span></label><input id="actHa" type="number" value="8.5" step="0.1" min="0"></div>
+                  <div class="field"><label>Fecha de inicio <span class="opt">opcional</span></label><input id="actIni" type="date" value="2026-11-01"></div>
+                  <div class="field"><label>Fecha de término <span class="opt">opcional</span></label><input id="actFin" type="date"></div>
+                  <div class="field"><label>Estado de ejecución <span class="req">*</span></label><select id="actEst"><option>Planificada</option><option>En ejecución</option><option>Ejecutada</option><option>Suspendida</option></select></div>
+                  <div class="field"><label>Observaciones <span class="opt">opcional</span></label><input id="actObs"></div>
                 </div>
+                <div style="margin-top:13px"><button class="btn primary" onclick="addActivity()">＋ Agregar actividad a la UR</button></div>
               </div>
             </div>
 
@@ -749,24 +735,25 @@ td select{padding:3px 6px;font-size:13px}
                 <div class="category-head"><span>5.1</span><strong>Indicadores + eventos de monitoreo</strong></div>
                 <div class="info"><b>Evento de monitoreo:</b> UR + fecha + indicador + valor + unidad + método + fuente/responsable. La unidad de monitoreo es temporal y puede repetirse a lo largo de la vida de la UR.</div>
                 <div class="summary">
-                  <div class="metric"><strong>3</strong><span>Eventos registrados</span></div>
+                  <div class="metric"><strong data-count="ev">3</strong><span>Eventos registrados</span></div>
                   <div class="metric"><strong>2026-08</strong><span>Última medición</span></div>
                   <div class="metric"><strong>78%</strong><span>Supervivencia</span></div>
                   <div class="metric"><strong>Vigente</strong><span>Seguimiento</span></div>
                 </div>
                 <table>
                   <thead><tr><th>Fecha</th><th>Indicador</th><th>Valor</th><th>Unidad</th><th>Método</th><th>Fuente / responsable</th><th></th></tr></thead>
-                  <tbody>
+                  <tbody id="evRows">
                     <tr><td>2026-08-14</td><td>Supervivencia de plantación</td><td><b>78</b></td><td>%</td><td>Muestreo de parcelas</td><td>Equipo de monitoreo</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
                     <tr><td>2026-08-14</td><td>Cobertura vegetal</td><td><b>64</b></td><td>%</td><td>Transectos</td><td>Equipo de monitoreo</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
-                    <tr><td>2026-05-10</td><td>Superficie bajo restauración</td><td><b>42,6</b></td><td>ha</td><td>Calculado desde el polígono</td><td>Plataforma (derivado)</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
+                    <tr><td>2026-05-10</td><td>Superficie bajo restauración</td><td><b data-ha>42,6</b></td><td>ha</td><td>Calculado desde el polígono</td><td>Plataforma (derivado)</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
                   </tbody>
                 </table>
-                <div style="margin-top:13px"><button class="btn primary" onclick="toast('Formulario de nuevo evento abierto')">＋ Registrar evento de monitoreo</button></div>
+                <div style="margin-top:13px"><button class="btn primary" onclick="showStep(4)">＋ Registrar evento de monitoreo</button></div>
               </div>
 
               <div class="category-card">
                 <div class="category-head"><span>CATÁLOGO</span><strong>Indicadores de monitoreo</strong></div>
+                <div class="help" style="margin:-6px 0 10px">Marque los indicadores que aplican a esta UR; cada medición se registra como evento en el paso 4.</div>
                 <div class="checkgrid">
                   <label class="check"><input type="checkbox" checked> Superficie bajo restauración · ha</label>
                   <label class="check"><input type="checkbox" checked> Supervivencia de plantación · %</label>
@@ -790,25 +777,27 @@ td select{padding:3px 6px;font-size:13px}
           <div class="card-head"><div><h2>4. Registrar evento de monitoreo</h2><p>Medición verificable asociada a una UR.</p></div><span class="badge">Evento nuevo</span></div>
           <div class="card-body">
             <div class="grid three">
-              <div class="field"><label>Unidad de Restauración <span class="req">*</span></label><select><option>UR-001 · Bosque costero</option></select></div>
-              <div class="field" id="fMedBox"><label>Fecha de medición <span class="req">*</span></label><input id="fMed" type="date" value="2026-10-06" onchange="validate()"><div class="errmsg">Debe ser igual o posterior al inicio de la UR (2025-03-01) y no superar la fecha actual.</div></div>
-              <div class="field"><label>Indicador <span class="req">*</span></label><select><option>Supervivencia de plantación</option><option>Cobertura vegetal</option><option>Riqueza de especies nativas</option><option>Superficie bajo restauración</option><option>Superficie con control efectivo de invasoras</option><option>Proporción de material vegetal con procedencia trazable</option><option>UR con monitoreo vigente</option></select></div>
-              <div class="field"><label>Valor <span class="req">*</span></label><input value="82" type="number"></div>
-              <div class="field"><label>Unidad</label><input value="%" disabled></div>
-              <div class="field"><label>Método <span class="req">*</span></label><select><option>Muestreo de parcelas</option><option>Transectos</option><option>Teledetección</option><option>Inventario</option><option>Otro</option></select></div>
-              <div class="field"><label>Fuente / responsable <span class="req">*</span></label><input value="Equipo de monitoreo de la iniciativa"></div>
+              <div class="field"><label>ID evento ⚙</label><input value="(se genera al guardar)" disabled></div>
+              <div class="field"><label>Unidad de Restauración <span class="req">*</span></label><select><option>UR-001 · Bosque esclerófilo costero</option></select></div>
+              <div class="field" id="fMedBox"><label>Fecha de medición <span class="req">*</span></label><input id="fMed" type="date" value="2026-10-06" onchange="validate()"><div class="errmsg" id="fMedErr">Debe ser igual o posterior al inicio de la UR y no superar la fecha actual.</div></div>
+              <div class="field"><label>Indicador <span class="req">*</span></label><select id="evInd" onchange="indSync()"><option data-u="%" data-max="100">Supervivencia de plantación</option><option data-u="%" data-max="100">Cobertura vegetal</option><option data-u="Nº de taxones">Riqueza de especies nativas</option><option data-u="ha">Superficie bajo restauración</option><option data-u="ha">Superficie con control efectivo de invasoras</option><option data-u="%" data-max="100">Proporción de material vegetal con procedencia trazable</option><option data-u="%" data-max="100">UR con monitoreo vigente</option><option data-u="Por definir">Otros indicadores (sociales, económicos, de gobernanza, de género y culturales)</option></select></div>
+              <div class="field"><label>Valor <span class="req">*</span></label><input id="evVal" value="82" type="number" min="0" max="100"><div class="help" id="evRange">Rango válido: 0–100.</div></div>
+              <div class="field"><label>Unidad ⚙</label><input id="evUnit" value="%" disabled><div class="help">Unidad asociada al indicador.</div></div>
+              <div class="field"><label>Método <span class="req">*</span></label><select id="evMet"><option>Muestreo de parcelas</option><option>Calculado desde el polígono</option><option>Transectos</option><option>Teledetección</option><option>Inventario</option><option>Otro</option></select></div>
+              <div class="field"><label>Fuente / responsable <span class="req">*</span></label><input id="evSrc" value="Equipo de monitoreo de la iniciativa"></div>
               <div class="field"><label>Evidencia <span class="opt">opcional</span></label><input type="file"></div>
               <div class="field full"><label>Observaciones <span class="opt">opcional</span></label><textarea>La supervivencia aumentó respecto de la medición anterior. Se adjunta informe de terreno.</textarea></div>
             </div>
+            <div style="margin-top:14px"><button class="btn primary" onclick="addEvent()">Guardar evento</button> <span class="help" style="display:inline;margin-left:8px">El evento queda asociado a la UR y aparece en 3 · Seguimiento.</span></div>
           </div>
         </div>
         <div class="card">
           <div class="card-head"><h2>Catálogo preliminar de indicadores</h2><span class="badge gray">alineación multipropósito</span></div>
-          <div class="card-body"><table><thead><tr><th>Indicador</th><th>Unidad</th><th>Escala</th><th>Alineación</th></tr></thead><tbody>
+          <div class="card-body"><table><thead><tr><th>Indicador</th><th>Unidad</th><th>Escala de reporte</th><th>Alineación</th></tr></thead><tbody>
             <tr><td>Superficie bajo restauración</td><td>ha</td><td>UR → regional → nacional</td><td>PNRP / FERM / CDB Meta 2</td></tr>
             <tr><td>Supervivencia de plantación</td><td>%</td><td>UR</td><td>PNRP / estándares SER</td></tr>
             <tr><td>Cobertura vegetal</td><td>%</td><td>UR</td><td>FERM</td></tr>
-            <tr><td>Riqueza de especies nativas</td><td>Nº taxones</td><td>UR</td><td>Estándares SER</td></tr>
+            <tr><td>Riqueza de especies nativas</td><td>Nº de taxones</td><td>UR</td><td>Estándares SER</td></tr>
             <tr><td>Superficie con control efectivo de invasoras</td><td>ha</td><td>UR → nacional</td><td>PNRP</td></tr>
             <tr><td>Proporción de material vegetal con procedencia trazable</td><td>%</td><td>UR → nacional</td><td>Trazabilidad</td></tr>
             <tr><td>UR con monitoreo vigente</td><td>%</td><td>Regional → nacional</td><td>Regla de seguimiento</td></tr>
@@ -821,13 +810,13 @@ td select{padding:3px 6px;font-size:13px}
       <!-- STEP 5 -->
       <section class="page hidden" id="page5">
         <div class="card">
-          <div class="card-head"><div><h2>5. Revisar y enviar</h2><p>Validación previa a la publicación institucional.</p></div><span class="badge">Apresto / validación</span></div>
+          <div class="card-head"><div><h2>5. Revisar y enviar</h2><p>Validación previa a la publicación institucional.</p></div><span class="badge">Listo para validación</span></div>
           <div class="card-body">
             <div class="summary">
               <div class="metric"><strong>92%</strong><span>Completitud</span></div>
               <div class="metric"><strong>1</strong><span>UR</span></div>
-              <div class="metric"><strong>3</strong><span>Actividades</span></div>
-              <div class="metric"><strong>3</strong><span>Eventos</span></div>
+              <div class="metric"><strong data-count="act">3</strong><span>Actividades</span></div>
+              <div class="metric"><strong data-count="ev">3</strong><span>Eventos</span></div>
             </div>
             <div class="review">✓ Identificación de iniciativa completa.</div>
             <div class="review">✓ Polígono de UR definido y superficie calculada.</div>
@@ -837,7 +826,7 @@ td select{padding:3px 6px;font-size:13px}
             <div class="review">✓ Coherencia temporal: fechas de término y de medición consistentes con el inicio.</div>
             <div class="review">✓ Sin solape con UR de otros titulares (verificación simulada).</div>
             <div class="review">✓ Campos de Nivel 1 completos; Nivel 2 facultativo.</div>
-            <div class="review warn">! Campo opcional pendiente: evidencia adicional del modelo de referencia.</div>
+            <div class="review warn">! Campos opcionales pendientes (Nivel 2): estado objetivo, condiciones físicas, equipo humano mínimo.</div>
             <div class="info" style="margin-top:16px"><b>Flujo propuesto:</b> Guardar borrador → enviar a validación → revisión técnica/institucional → publicación. La validación se mantiene como parte del flujo y no como un campo de la ficha. Roles: quien sube datos → editor/administrador temático → administrador.</div>
             <label class="check" style="margin-bottom:12px"><input type="checkbox" id="agree"> Declaro que la información ingresada cuenta con respaldo y autorización para su registro.</label>
             <button class="btn secondary" onclick="submitDemo()">Enviar a validación institucional</button>
@@ -857,7 +846,7 @@ td select{padding:3px 6px;font-size:13px}
   <p class="mini">SIMBIO · Sistema de Información y Monitoreo de Biodiversidad<br>Maqueta · Módulo de Restauración Ecológica · Producto 2</p>
 </div></footer>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 let current=0;
@@ -868,28 +857,43 @@ function showStep(n){
   document.querySelectorAll('.step').forEach(s=>{
     let x=+s.dataset.step; s.classList.toggle('active',x===current); s.classList.toggle('done',x<current);
   });
-  document.querySelectorAll('.side-item').forEach(s=>s.classList.toggle('active',+s.dataset.nav===current));
   document.getElementById('prevBtn').style.visibility=current===0?'hidden':'visible';
   document.getElementById('nextBtn').textContent=current===5?'Finalizar':current===0?'Comenzar el registro →':'Continuar →';
   document.getElementById('lvline').style.display=current===0?'none':'block';
-  document.getElementById('prog').style.width=(current===0?10:current===1?42:current===2?58:current===3?76:current===4?86:100)+'%';
-  document.getElementById('progText').textContent=(current===0?10:current===1?42:current===2?58:current===3?76:current===4?86:100)+'% · '+(current===5?'listo para validación':'borrador');
   window.scrollTo({top:0,behavior:'smooth'});
-  if(current===2&&typeof map!=='undefined')setTimeout(()=>{map.invalidateSize();map.fitBounds(ur.getBounds().pad(.6))},60);
+  if(current===2&&map)setTimeout(()=>{map.invalidateSize();map.fitBounds(ur.getBounds().pad(.6))},60);
 }
 function changeStep(d){ if(current===5 && d>0){submitDemo();return;} showStep(current+d); }
-document.querySelectorAll('.step,.side-item').forEach(el=>el.addEventListener('click',()=>showStep(+(el.dataset.step||el.dataset.nav))));
+document.querySelectorAll('.step').forEach(el=>{el.setAttribute('role','button');el.tabIndex=0;const go=()=>showStep(+el.dataset.step);el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+document.querySelectorAll('.tab').forEach(t=>t.setAttribute('role','tab'));
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  document.querySelectorAll('.tab').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false')});t.classList.add('active');t.setAttribute('aria-selected','true');
   document.querySelectorAll('.dim').forEach(x=>x.classList.remove('active'));document.getElementById(t.dataset.tab).classList.add('active');
 }));
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2400)}
+function refreshCounts(){const a=activityRows.rows.length,e=evRows.rows.length;document.querySelectorAll('[data-count=act]').forEach(x=>x.textContent=a);document.querySelectorAll('[data-count=ev]').forEach(x=>x.textContent=e)}
 function addActivity(){
-  const tb=document.getElementById('activityRows');const tr=document.createElement('tr');
-  tr.innerHTML='<td>AC08 – Trabajo con comunidades locales</td><td>8,5</td><td>2026-03</td><td>—</td><td><span class="badge yellow">Planificada</span></td><td><button class="btn" onclick="toast(\'Actividad editada\')">Editar</button></td>';tb.appendChild(tr);toast('Actividad agregada');
+  const ha=parseFloat(actHa.value);if(!(ha>0)){toast('Indique la superficie de aplicación');return}
+  if(ha>urHa()+0.05){toast('La superficie de aplicación ('+fmtHa(ha)+' ha) supera la superficie de la UR ('+fmtHa(urHa())+' ha)');return}
+  const est=actEst.value,badge=est==='Planificada'?'badge yellow':est==='Suspendida'?'badge gray':'badge';
+  const tr=document.createElement('tr');
+  [actSel.value,fmtHa(ha),actIni.value?actIni.value.slice(0,7):'—',actFin.value?actFin.value.slice(0,7):'—'].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});
+  tr.insertAdjacentHTML('beforeend','<td><span class="'+badge+'"></span></td><td><button class="btn">Editar</button></td>');
+  tr.querySelector('.badge').textContent=est;const b=tr.querySelector('button');b.setAttribute('aria-label','Editar '+actSel.value);b.onclick=()=>toast('Actividad editada');
+  activityRows.appendChild(tr);refreshCounts();toast('Actividad agregada a la UR');
 }
+function addEvent(){
+  validate();if(fMedBox.classList.contains('err')){toast('Corrija la fecha de medición');return}
+  const v=parseFloat(evVal.value),o=evInd.selectedOptions[0];if(isNaN(v)){toast('Indique el valor medido');return}
+  if(o.dataset.max&&(v<0||v>+o.dataset.max)){toast('El valor debe estar entre 0 y '+o.dataset.max);return}
+  const tr=document.createElement('tr');
+  [fMed.value,evInd.value,String(v).replace('.',','),evUnit.value,evMet.value,evSrc.value].forEach((t,i)=>{const td=document.createElement('td');if(i===2){const b=document.createElement('b');b.textContent=t;td.appendChild(b)}else td.textContent=t;tr.appendChild(td)});
+  tr.insertAdjacentHTML('beforeend','<td><button class="btn">Ver</button></td>');const b=tr.querySelector('button');b.setAttribute('aria-label','Ver evento '+evInd.value+' '+fMed.value);b.onclick=()=>toast('Evento abierto');
+  evRows.prepend(tr);refreshCounts();toast('Evento guardado con ID '+Math.random().toString(16).slice(2,10).toUpperCase()+' · visible en 3 · Seguimiento');
+}
+function indSync(){const o=evInd.selectedOptions[0];evUnit.value=o.dataset.u;if(o.dataset.max){evVal.max=o.dataset.max;evRange.textContent='Rango válido: 0–'+o.dataset.max+'.'}else{evVal.removeAttribute('max');evRange.textContent='Valor numérico ≥ 0.'}}
 function submitDemo(){
-  if(!document.getElementById('agree').checked){toast('Marca la declaración antes de enviar');return}
+  if(!document.getElementById('agree').checked){toast('Marque la declaración antes de enviar');return}
   toast('Demo: iniciativa enviada a validación institucional');
 }
 function setLevel(n){
@@ -903,42 +907,53 @@ document.querySelectorAll('.choice-row').forEach(row=>row.addEventListener('clic
   row.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
   if(row.id==='objRow')document.getElementById('svcBlock').style.display=b.textContent.trim()==='Servicios ecosistémicos'?'block':'none';
 }));
+function otroToggle(){otroBox.style.display=(tipoM.value==='Otro'||tipoE.value==='Otro')?'block':'none'}
+function ecoSync(){const o=urEco.selectedOptions[0];document.querySelectorAll('[data-eco]').forEach(e=>e.value=o.textContent);document.querySelectorAll('[data-ecotipo]').forEach(e=>{if(e.tagName==='INPUT')e.value=o.dataset.tipo;else e.textContent=o.dataset.tipo})}
+function yearSync(){document.querySelectorAll('[data-uryear]').forEach(e=>{if(e.tagName==='INPUT')e.value=urYear.value;else e.textContent=urYear.value});validate()}
 function alcToggle(){document.getElementById('progBox').style.display=document.getElementById('alc').value==='Parte de un programa'?'block':'none'}
 function planToggle(){const v=document.getElementById('plan').value;document.getElementById('planBox').style.display=(v==='Plan regional de restauración'||v==='Otro instrumento')?'block':'none'}
-function addSpecies(){const q=document.getElementById('spSearch').value.trim()||'Nueva especie';const tr=document.createElement('tr');tr.innerHTML='<td><i>'+q+'</i></td><td><select><option>Dominante</option><option selected>Acompañante</option></select></td><td><button class="btn" onclick="this.closest(\'tr\').remove()">Quitar</button></td>';document.getElementById('spRows').appendChild(tr);document.getElementById('spSearch').value='';toast('Especie agregada')}
+function addSpecies(){const q=spSearch.value.trim();if(!q){toast('Escriba el nombre de la especie');return}if([...spRows.rows].some(r=>r.cells[0].textContent.trim().toLowerCase()===q.toLowerCase())){toast('Esa especie ya está en la lista');return}const tr=document.createElement('tr');tr.innerHTML='<td><i></i></td><td><select><option>Dominante</option><option selected>Acompañante</option></select></td><td><button class="btn" onclick="this.closest(\'tr\').remove()">Quitar</button></td>';tr.querySelector('i').textContent=q;tr.querySelector('button').setAttribute('aria-label','Quitar '+q);spRows.appendChild(tr);spSearch.value='';toast('Especie agregada')}
 function ccToggle(){document.getElementById('ccTxt').style.display=document.getElementById('cc').value==='Sí'?'block':'none'}
-function refToggle(){const i=document.getElementById('refSite');i.disabled=document.getElementById('refSrc').value!=='Sitio de referencia en terreno'}
-function cdToggle(){const i=document.getElementById('cdOtra');i.disabled=!document.getElementById('cd').value.startsWith('CD13')}
+function refToggle(){const on=refSrc.value==='Sitio de referencia en terreno';refSite.disabled=!on;refReq.style.display=on?'':'none';document.querySelectorAll('.refxy').forEach(i=>i.disabled=!on)}
+function cdToggle(){const on=cd.value.startsWith('CD13');cdOtra.disabled=!on;cdReq.style.display=on?'':'none'}
 function validate(){
   const ini=fIni.value,fin=fFin.value,med=fMed.value,hoy=new Date().toISOString().slice(0,10);
   fFinBox.classList.toggle('err',!!(fin&&ini&&fin<ini));
-  fMedBox.classList.toggle('err',!!(med&&(med<'2025-03-01'||med>hoy)));
+  const urIni=(urYear.value||'2025')+'-01-01';fMedErr.textContent='Debe ser igual o posterior al inicio de la UR ('+urYear.value+') y no superar la fecha actual.';
+  fMedBox.classList.toggle('err',!!(med&&(med<urIni||med>hoy)));
 }
+// ponytail: asociación label↔control automática para accesibilidad
+document.querySelectorAll('.field > label:not(.check)').forEach((l,i)=>{const c=l.parentElement.querySelector('input,select,textarea');if(c&&!l.htmlFor){if(!c.id)c.id='f'+i;l.htmlFor=c.id}});
+document.querySelectorAll('table button').forEach(b=>{if(!b.getAttribute('aria-label')){const r=b.closest('tr');if(r&&r.cells[0])b.setAttribute('aria-label',b.textContent.trim()+' · '+r.cells[0].textContent.trim().slice(0,60))}});
+alcToggle();otroToggle();showStep(0);
 setLevel(1);
 
 /* ---- Mapa (Leaflet + teselas públicas) ---- */
-const urCoords=[[-36.83829,-73.04306],[-36.83713,-73.03885],[-36.83856,-73.03552],[-36.84189,-73.03511],[-36.84393,-73.0381],[-36.84311,-73.04225],[-36.8406,-73.04361]];
-const map=L.map('map',{zoomControl:true,attributionControl:true}).setView([-36.8405,-73.0395],14);
+const urCoords=[[-36.838288,-73.043064],[-36.837126,-73.038849],[-36.838558,-73.035516],[-36.841892,-73.035105],[-36.843934,-73.038098],[-36.843113,-73.042253],[-36.8406,-73.043614]];
+let map,ur,urLabel;
+function urHa(){return ur?polyAreaHa(ur.getLatLngs()[0]):42.6}
+if(!window.L){document.getElementById('mapFooter').textContent='Mapa no disponible (no se pudo cargar Leaflet). El resto de la ficha funciona.';}else{
+map=L.map('map',{zoomControl:true,attributionControl:true}).setView([-36.8405,-73.0395],14);
 const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Maxar, Earthstar Geographics'});
 const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
 sat.addTo(map);L.control.layers({'Satelital':sat,'OpenStreetMap':osm},null,{position:'topright'}).addTo(map);
 sat.on('tileerror',()=>{document.getElementById('mapFooter').textContent='Sin conexión: las teselas no cargaron. El polígono sigue siendo editable.'});
 const urStyle={color:'#009ecb',weight:3,fillColor:'#009ecb',fillOpacity:.3};
-let ur=L.polygon(urCoords,urStyle).addTo(map);
-let urLabel=L.marker(ur.getBounds().getCenter(),{icon:L.divIcon({className:'ur-label',html:'UR-001 · 42,6 ha',iconSize:null}),interactive:false}).addTo(map);
+ur=L.polygon(urCoords,urStyle).addTo(map);
+urLabel=L.marker(ur.getBounds().getCenter(),{icon:L.divIcon({className:'ur-label',html:'UR-001 · 42,6 ha',iconSize:null}),interactive:false}).addTo(map);
 map.fitBounds(ur.getBounds().pad(.6));
+}
 // ponytail: área por fórmula esférica simple; suficiente para la maqueta
 function polyAreaHa(latlngs){const R=6378137;let a=0;const n=latlngs.length;for(let i=0;i<n;i++){const p1=latlngs[i],p2=latlngs[(i+1)%n];a+=(p2.lng-p1.lng)*Math.PI/180*(2+Math.sin(p1.lat*Math.PI/180)+Math.sin(p2.lat*Math.PI/180))}return Math.abs(a*R*R/2)/10000}
 function fmtHa(h){return h.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1})}
-function setUR(latlngs){ur.setLatLngs(latlngs);const ha=polyAreaHa(ur.getLatLngs()[0]);urLabel.setLatLng(ur.getBounds().getCenter());urLabel.setIcon(L.divIcon({className:'ur-label',html:'UR-001 · '+fmtHa(ha)+' ha',iconSize:null}));document.querySelectorAll('[data-ha]').forEach(e=>{const v=fmtHa(ha)+(e.dataset.ha==='short'?' ha':'');if(e.tagName==='INPUT')e.value=v;else e.textContent=v});return ha}
-function calcArea(show){const ha=polyAreaHa(ur.getLatLngs()[0]);setUR(ur.getLatLngs()[0]);if(show)toast('Superficie calculada desde el polígono: '+fmtHa(ha)+' ha')}
+function setUR(latlngs){ur.setLatLngs(latlngs);const ha=polyAreaHa(ur.getLatLngs()[0]);urLabel.setLatLng(ur.getBounds().getCenter());urLabel.setIcon(L.divIcon({className:'ur-label',html:'UR-001 · '+fmtHa(ha)+' ha',iconSize:null}));document.querySelectorAll('[data-ha]').forEach(e=>{const k=e.dataset.ha;const v=k==='short'?fmtHa(ha)+' ha':k==='badge'?'UR-001 · '+fmtHa(ha)+' ha':k==='pnrp'?'Paisaje de restauración Nahuelbuta–Biobío · '+fmtHa(ha*.89)+' ha (89%)':fmtHa(ha);if(e.tagName==='INPUT')e.value=v;else e.textContent=v});return ha}
+function calcArea(show){if(!map){toast('Mapa no disponible');return}const ha=polyAreaHa(ur.getLatLngs()[0]);setUR(ur.getLatLngs()[0]);if(show)toast('Superficie calculada desde el polígono: '+fmtHa(ha)+' ha')}
 let drawing=false,pts=[],tmp=null;
-function startDraw(){if(drawing){finishDraw();return}drawing=true;pts=[];document.getElementById('mapbox').classList.add('drawing');document.getElementById('drawBtn').textContent='✓ Terminar polígono';toast('Haz clic en el mapa para agregar vértices; doble clic o "Terminar" para cerrar');map.doubleClickZoom.disable()}
+function startDraw(){if(!map){toast('Mapa no disponible');return}if(drawing){finishDraw();return}drawing=true;pts=[];document.getElementById('mapbox').classList.add('drawing');document.getElementById('drawBtn').textContent='✓ Terminar polígono';toast('Haga clic en el mapa para agregar vértices; doble clic o «✓ Terminar polígono» para cerrar');map.doubleClickZoom.disable()}
 function finishDraw(){drawing=false;document.getElementById('mapbox').classList.remove('drawing');document.getElementById('drawBtn').textContent='＋ Dibujar polígono';map.doubleClickZoom.enable();if(tmp){map.removeLayer(tmp);tmp=null}if(pts.length>=3){setUR(pts);toast('Polígono de la UR actualizado · '+fmtHa(polyAreaHa(ur.getLatLngs()[0]))+' ha')}else toast('Se necesitan al menos 3 vértices')}
-map.on('click',e=>{if(!drawing)return;pts.push(e.latlng);if(tmp)map.removeLayer(tmp);tmp=L.polyline(pts,{color:'#ffc107',weight:2,dashArray:'4 4'}).addTo(map)});
-map.on('dblclick',e=>{if(drawing)finishDraw()});
-function importGeo(inp){const f=inp.files[0];if(!f)return;f.text().then(t=>{const g=JSON.parse(t);const feat=g.type==='FeatureCollection'?g.features[0]:g;const geom=feat.geometry||feat;const ring=(geom.type==='MultiPolygon'?geom.coordinates[0][0]:geom.coordinates[0]).map(c=>L.latLng(c[1],c[0]));setUR(ring);map.fitBounds(ur.getBounds().pad(.4));toast('GeoJSON importado · '+fmtHa(polyAreaHa(ur.getLatLngs()[0]))+' ha')}).catch(()=>toast('No se pudo leer el GeoJSON'));inp.value=''}
-showStep(0);
+if(map){map.on('click',e=>{if(!drawing)return;pts.push(e.latlng);if(tmp)map.removeLayer(tmp);tmp=L.polyline(pts,{color:'#ffc107',weight:2,dashArray:'4 4'}).addTo(map)});
+map.on('dblclick',e=>{if(drawing)finishDraw()});}
+function importGeo(inp){const f=inp.files[0];if(!f||!map)return;f.text().then(t=>{const g=JSON.parse(t);const feat=g.type==='FeatureCollection'?g.features[0]:g;const geom=feat.geometry||feat;const ring=(geom.type==='MultiPolygon'?geom.coordinates[0][0]:geom.coordinates[0]).map(c=>L.latLng(c[1],c[0]));setUR(ring);map.fitBounds(ur.getBounds().pad(.4));toast('GeoJSON importado · '+fmtHa(polyAreaHa(ur.getLatLngs()[0]))+' ha')}).catch(()=>toast('No se pudo leer el GeoJSON'));inp.value=''}
 </script>
 </body>
 </html>

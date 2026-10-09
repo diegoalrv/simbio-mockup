@@ -119,6 +119,13 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
 .category-description{font-size:12px;color:#68777a;line-height:1.45;margin:-4px 0 14px}
 .subsection-title{font-size:12px;font-weight:700;color:#38565a;margin:18px 0 9px;padding-top:12px;border-top:1px solid #e6ecea}
 
+body.only-n1 .n2{display:none!important}
+.levelbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:12px;color:#52676b}
+.levelbar .seg{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.levelbar .seg button{border:0;background:#fff;padding:7px 12px;font-size:12px;color:#52676b}
+.levelbar .seg button.on{background:var(--green);color:#fff;font-weight:700}
+.errmsg{color:var(--danger);font-size:11px;margin-top:5px;display:none}
+.field.err input{border-color:var(--danger)}.field.err .errmsg{display:block}
 </style>
 </head>
 <body>
@@ -140,6 +147,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
   </div>
 </div>
 <div class="wrap">
+  <div class="levelbar"><b>Nivel de la ficha</b><div class="seg"><button id="lv1" class="on" onclick="setLevel(1)">Nivel 1 · Básico (obligatorio)</button><button id="lv2" onclick="setLevel(2)">Nivel 1 + Nivel 2 · Profundización</button></div><span>El Nivel 1 permite un registro rápido con la información indispensable; el Nivel 2 es facultativo y agrega profundidad técnica.</span></div>
   <div class="stepper">
     <div class="step active" data-step="1"><span class="n">1</span> Iniciativa</div><div class="sep"></div>
     <div class="step" data-step="2"><span class="n">2</span> Unidad de Restauración</div><div class="sep"></div>
@@ -174,20 +182,42 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
               <div class="field"><label>Correo / contacto</label><input value="contacto@ejemplo.cl"></div>
               <div class="field"><label>Mandante <span class="req">*</span></label><input value="Municipalidad de Penco"></div>
               <div class="field"><label>Ejecutor <span class="req">*</span></label><input value="Organización para la Restauración Local"></div>
-              <div class="field"><label>Período de ejecución · inicio <span class="req">*</span></label><input type="date" value="2025-03-01"></div>
-              <div class="field"><label>Período de ejecución · término <span class="opt">opcional</span></label><input type="date"></div>
+              <div class="field"><label>Tipo de entidad · mandante <span class="req">*</span></label><select><option selected>Institución pública</option><option>ONG</option><option>Empresa privada</option><option>Comunidad u organización comunitaria</option><option>Academia / investigación</option><option>Otro</option></select></div>
+              <div class="field"><label>Tipo de entidad · ejecutor <span class="req">*</span></label><select><option>Institución pública</option><option selected>ONG</option><option>Empresa privada</option><option>Comunidad u organización comunitaria</option><option>Academia / investigación</option><option>Otro</option></select><div class="help">Los registros de terceros se discriminan por tipo de entidad; no se amalgaman.</div></div>
+              <div class="field full"><label>Otro tipo de entidad, ¿cuál? <span class="opt">solo si corresponde</span></label><input placeholder="Especificar"></div>
+              <div class="field"><label>Período de ejecución · inicio <span class="req">*</span></label><input id="fIni" type="date" value="2025-03-01" onchange="validate()"></div>
+              <div class="field" id="fFinBox"><label>Período de ejecución · término <span class="opt">opcional</span></label><input id="fFin" type="date" onchange="validate()"><div class="errmsg">La fecha de término no puede ser anterior al inicio.</div></div>
               <div class="field"><label>Estado de avance <span class="req">*</span></label><select><option>En planificación</option><option selected>En ejecución</option><option>Finalizada</option><option>Suspendida</option></select></div>
-              <div class="field"><label>¿Forma parte de un programa?</label><select><option selected>Sí</option><option>No</option></select></div>
-              <div class="field"><label>Beneficiarios</label><textarea style="min-height:65px">Comunidades locales, organizaciones territoriales y propietarios del área de intervención.</textarea></div>
-              <div class="field"><label>Tenencia / propiedad</label><textarea style="min-height:65px">Mixta: terrenos municipales y predios privados con acuerdos de intervención.</textarea></div>
-              <div class="field"><label>Costos y requerimientos <span class="opt">opcional</span></label><input value="$ 85.000.000 CLP estimados"></div>
-              <div class="field"><label>Beneficios esperados <span class="opt">opcional</span></label><input value="Ecológicos, culturales, recreativos y de resiliencia territorial"></div>
-              <div class="field"><label>Financiamiento <span class="opt">opcional</span></label><input value="Fondo de restauración / recursos propios"></div>
-              <div class="field"><label>Vinculación con Plan de Restauración <span class="opt">opcional</span></label><input value="Plan de Restauración de Paisajes"></div>
-              <div class="field full"><label>Vialidad de la iniciativa <span class="opt">opcional</span></label><textarea style="min-height:65px">Condiciones técnicas, económicas, sociales, ambientales e institucionales que permiten la implementación de la iniciativa.</textarea></div>
+              
+              <div class="field n2"><label>Beneficiarios</label><textarea style="min-height:65px">Comunidades locales, organizaciones territoriales y propietarios del área de intervención.</textarea></div>
+              <div class="field n2"><label>Tenencia / propiedad · regularización de predios</label><textarea style="min-height:65px">Mixta: terrenos municipales y predios privados con acuerdos de intervención.</textarea></div>
+              
 
             </div>
           </div>
+        </div>
+        <div class="card n2">
+          <div class="card-head"><div><h2>Gestión, costos y viabilidad</h2><p>Profundización de la iniciativa.</p></div><span class="badge yellow">Nivel 2 · facultativo</span></div>
+          <div class="card-body"><div class="grid">
+            <div class="field"><label>Financiamiento</label><input value="Fondo de restauración / recursos propios"></div>
+            <div class="field"><label>Vinculación con Plan de Restauración</label><input value="Plan de Restauración de Paisajes"></div>
+            <div class="field full"><div class="subsection-title" style="margin-top:0">Costos y requerimientos</div></div>
+            <div class="field"><label>Costos estimados por partida</label><textarea style="min-height:65px">Total estimado: $ 85.000.000 CLP (detalle por partida)</textarea></div>
+            <div class="field"><label>Equipo humano mínimo</label><textarea style="min-height:65px"></textarea></div>
+            <div class="field"><label>Equipamiento</label><input></div>
+            <div class="field"><label>Capacitación previa</label><input></div>
+            <div class="field full"><label>Umbrales de éxito (ej. % de supervivencia)</label><input placeholder="Ej.: supervivencia ≥ 70% al año 2"></div>
+            <div class="field full"><div class="subsection-title" style="margin-top:0">Beneficios esperados</div></div>
+            <div class="field full"><label>Aspiraciones comunitarias esperadas</label><div class="checkgrid"><label class="check"><input type="checkbox" checked> Culturales</label><label class="check"><input type="checkbox"> Productivas</label><label class="check"><input type="checkbox" checked> Recreativas</label><label class="check"><input type="checkbox"> Espirituales</label></div></div>
+            <div class="field full"><label>Expectativas por edad / género</label><textarea style="min-height:65px"></textarea></div>
+            <div class="field full"><div class="subsection-title" style="margin-top:0">Ficha de viabilidad</div></div>
+            <div class="field"><label>Viabilidad técnica</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
+            <div class="field"><label>Viabilidad económica</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
+            <div class="field"><label>Viabilidad social</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
+            <div class="field"><label>Viabilidad ambiental</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
+            <div class="field"><label>Viabilidad institucional</label><select><option>Favorable</option><option>Con condiciones</option><option>No favorable</option><option>Sin evaluar</option></select></div>
+            <div class="field full"><label>Condiciones habilitantes</label><textarea style="min-height:65px">Condiciones técnicas, económicas, sociales, ambientales e institucionales que permiten la implementación.</textarea></div>
+          </div></div>
         </div>
         <div class="card">
           <div class="card-head"><div><h2>Ubicación general</h2><p>La ubicación detallada se define espacialmente mediante las UR.</p></div><span class="badge gray">Autocompletado por geoproceso</span></div>
@@ -234,11 +264,21 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
             <div class="grid three">
               <div class="field"><label>ID UR</label><input value="UR-001" disabled></div>
               <div class="field"><label>Superficie (ha)</label><input value="42,6" disabled></div>
-              <div class="field"><label>Año de inicio <span class="req">*</span></label><input value="2025" type="number"></div>
+              <div class="field"><label>Año de inicio</label><input value="2025" type="number" disabled><div class="help">Se registra en la Dimensión 1.</div></div>
               <div class="field"><label>Ecosistema sugerido</label><input value="Bosque esclerófilo / bosque costero" disabled></div>
               <div class="field"><label>Región / comuna</label><input value="Biobío / Penco" disabled></div>
               <div class="field"><label>Cuenca</label><input value="Cuencas costeras entre Andalién y Biobío" disabled></div>
+              <div class="field"><label>Estado de la UR <span class="req">*</span></label><select><option>Planificada</option><option selected>En ejecución</option><option>Finalizada</option><option>Suspendida</option></select></div>
+              <div class="field"><label>Última actualización de los datos</label><input type="date" value="2026-08-14"></div>
+              <div class="field"><label>Vigencia de la información <span class="req">*</span></label><select><option selected>Vigente</option><option>Por revisar</option><option>Desactualizada</option></select><div class="help">Vigencia ≠ actualización: un dato puede haberse actualizado y no seguir vigente.</div></div>
             </div>
+            <div class="subsection-title">Cruces territoriales derivados (geoproceso)</div>
+            <div class="grid three">
+              <div class="field"><label>Paisajes de restauración (PNRP)</label><input value="Paisaje de restauración costero · 38,1 ha (89%)" disabled></div>
+              <div class="field"><label>Zonificación del paisaje</label><input value="Zona de conservación y restauración" disabled></div>
+              <div class="field"><label>Designaciones territoriales</label><input value="Sin superposición" disabled></div>
+            </div>
+            <div class="help" style="margin-top:8px">Calculados automáticamente desde el polígono; no se ingresan a mano. Se verifica además que la UR no se solape con UR de otros titulares.</div>
             <div style="margin-top:15px"><button class="btn primary" onclick="toast('Nueva UR agregada al borrador')">＋ Agregar otra Unidad de Restauración</button></div>
           </div>
         </div>
@@ -259,7 +299,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
 
           <div class="dimtabs">
             <button class="tab active" data-tab="d1">1 · Estrategia de intervención</button>
-            <button class="tab" data-tab="d2">2 · Socio-ecológico y gobernanza</button>
+            <button class="tab n2" data-tab="d2">2 · Socio-ecológico y gobernanza</button>
             <button class="tab" data-tab="d3">3 · Diagnóstico</button>
             <button class="tab" data-tab="d4">4 · Actividades</button>
             <button class="tab" data-tab="d5">5 · Monitoreo</button>
@@ -290,24 +330,22 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                     <input value="Terrestre" disabled>
                     <div class="help">Campo automático/derivado.</div>
                   </div>
-                  <div class="field full">
-                    <label>Ecosistema de referencia · estado objetivo <span class="req">*</span></label>
-                    <textarea>Describir las condiciones ecológicas que se busca alcanzar: composición de especies, estructura, ausencia de amenazas, condiciones físicas y funciones ecosistémicas esperadas.</textarea>
+                  <div class="field full"><div class="subsection-title" style="margin-top:6px">Ecosistema de referencia · estado objetivo</div><div class="help">Condiciones ecológicas que se busca alcanzar; se describe caso a caso según los atributos del modelo de referencia SER.</div></div>
+                  <div class="field">
+                    <label>Fuente del modelo de referencia <span class="req">*</span></label>
+                    <select id="refSrc" onchange="refToggle()"><option>Sitio de referencia en terreno</option><option>Registro histórico</option><option>Literatura</option><option>Modelo de vegetación potencial</option><option>Conocimiento local o indígena</option><option>Otra</option></select>
                   </div>
                   <div class="field">
-                    <label>Procedencia del modelo de referencia <span class="req">*</span></label>
-                    <select><option>Sitio de referencia en terreno</option><option>Registro histórico</option><option>Literatura</option><option>Modelo de vegetación potencial</option><option>Conocimiento local o indígena</option><option>Otra</option></select>
-                  </div>
-                  <div class="field">
-                    <label>Sitio(s) de referencia</label>
-                    <input placeholder="Ubicación / geometría / referencia">
+                    <label>Sitio(s) de referencia <span class="opt">condicional</span></label>
+                    <input id="refSite" placeholder="Ubicación / geometría / referencia">
                     <div class="help">Obligatorio cuando la fuente es un sitio de referencia en terreno.</div>
                   </div>
                   <div class="field">
                     <label>Ajuste por cambio climático <span class="req">*</span></label>
-                    <select><option>Sí</option><option selected>No</option></select>
+                    <select id="cc" onchange="ccToggle()"><option>Sí</option><option selected>No</option></select>
                   </div>
-                  <div class="field">
+                  <div class="field full" id="ccTxt" style="display:none"><label>Descripción del ajuste por cambio climático <span class="req">*</span></label><textarea style="min-height:60px"></textarea></div>
+                  <div class="field n2">
                     <label>Especies características objetivo</label>
                     <input placeholder="Buscar especies del módulo Especies">
                   </div>
@@ -323,15 +361,15 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                     <label>Ausencia de amenazas <span class="req">*</span></label>
                     <textarea style="min-height:60px" placeholder="Presiones que deben estar controladas para alcanzar el estado objetivo."></textarea>
                   </div>
-                  <div class="field">
+                  <div class="field n2">
                     <label>Condiciones físicas <span class="opt">opcional</span></label>
                     <textarea style="min-height:60px" placeholder="Suelo, hidrología, topografía y microclima objetivo."></textarea>
                   </div>
-                  <div class="field">
+                  <div class="field n2">
                     <label>Función ecosistémica <span class="opt">opcional</span></label>
                     <textarea style="min-height:60px" placeholder="Regeneración, ciclado de nutrientes, polinización, hábitat de fauna."></textarea>
                   </div>
-                  <div class="field full">
+                  <div class="field full n2">
                     <label>Intercambios externos <span class="opt">opcional</span></label>
                     <textarea style="min-height:60px" placeholder="Conectividad con ecosistemas vecinos, flujos de agua, dispersión de propágulos, movimiento de fauna."></textarea>
                   </div>
@@ -350,19 +388,19 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
 
               <div class="category-card">
                 <div class="category-head"><span>OBJETO</span><strong>Objeto de restauración</strong></div>
-                <div class="choice-row">
+                <div class="choice-row" id="objRow">
                   <button class="choice">Especies</button>
                   <button class="choice selected">Ecosistemas</button>
                   <button class="choice">Servicios ecosistémicos</button>
                 </div>
-                <div class="field" style="margin-top:12px">
-                  <label>Servicio(s) ecosistémico(s) asociado(s)</label>
-                  <select multiple style="height:95px">
-                    <option selected>Regulación y mantenimiento</option>
-                    <option>Aprovisionamiento</option>
-                    <option>Culturales</option>
-                  </select>
-                  <div class="help">Ejemplos: control de erosión, regulación hídrica, mantenimiento de hábitats, regulación climática, polinización, alimentación, abastecimiento de agua, interacciones culturales.</div>
+                <div id="svcBlock" style="display:none;margin-top:12px">
+                  <div class="help" style="margin:0 0 4px">Servicios ecosistémicos (listado tentativo basado en CICES); pueden seleccionarse de forma agregada o desagregada.</div>
+                  <div class="subsection-title">Aprovisionamiento</div>
+                  <div class="checkgrid"><label class="check"><input type="checkbox"> Alimentación</label><label class="check"><input type="checkbox"> Abastecimiento de materiales</label><label class="check"><input type="checkbox"> Energía</label><label class="check"><input type="checkbox"> Abastecimiento de agua</label></div>
+                  <div class="subsection-title">Regulación y mantenimiento</div>
+                  <div class="checkgrid"><label class="check"><input type="checkbox"> Regulación de residuos y contaminantes</label><label class="check"><input type="checkbox"> Control de la erosión hídrica y eólica</label><label class="check"><input type="checkbox"> Regulación de escorrentía y caudales</label><label class="check"><input type="checkbox"> Mitigación de crecidas y oleaje</label><label class="check"><input type="checkbox"> Mantenimiento de hábitats y ciclos de vida (reproducción, refugio, alimentación)</label><label class="check"><input type="checkbox"> Regulación de la calidad del suelo</label><label class="check"><input type="checkbox"> Regulación climática (temperatura y humedad)</label><label class="check"><input type="checkbox"> Polinización y dispersión de semillas</label><label class="check"><input type="checkbox"> Control de plagas y enfermedades</label><label class="check"><input type="checkbox"> Mantenimiento de condiciones físicas, químicas y biológicas</label></div>
+                  <div class="subsection-title">Culturales</div>
+                  <div class="checkgrid"><label class="check"><input type="checkbox"> Interacciones físicas y experienciales</label><label class="check"><input type="checkbox"> Interacciones intelectuales y representativas</label><label class="check"><input type="checkbox"> Interacciones espirituales, simbólicas y de otro tipo</label></div>
                 </div>
               </div>
 
@@ -370,8 +408,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                 <div class="category-head"><span>TEMPORALIDAD</span><strong>Inicio de la intervención</strong></div>
                 <div class="grid three">
                   <div class="field"><label>Año de inicio <span class="req">*</span></label><input value="2025" type="number"></div>
-                  <div class="field"><label>Fecha de inicio</label><input type="date" value="2025-03-01"></div>
-                  <div class="field"><label>Alcance <span class="req">*</span></label><select><option selected>Proyecto individual</option><option>Parte de un programa</option></select></div>
+                                    <div class="field"><label>Alcance <span class="req">*</span></label><select><option selected>Proyecto individual</option><option>Parte de un programa</option></select></div>
                 </div>
               </div>
             </div>
@@ -390,12 +427,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
               <div class="category-card">
                 <div class="category-head"><span>2.1</span><strong>Enfoque de género</strong></div>
                 <p class="category-description">Incorporar la dimensión de género en la participación, implementación y beneficios de la iniciativa.</p>
-                <div class="checkgrid">
-                  <label class="check"><input type="checkbox" checked> Participación equitativa</label>
-                  <label class="check"><input type="checkbox" checked> Indicadores de género</label>
-                  <label class="check"><input type="checkbox"> Cadenas de valor lideradas por mujeres</label>
-                  <label class="check"><input type="checkbox"> Incentivos diferenciados</label>
-                </div>
+                
                 <div class="grid" style="margin-top:12px">
                   <div class="field">
                     <label>Participación equitativa</label>
@@ -428,10 +460,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                       <option>No aplica</option>
                     </select>
                   </div>
-                  <div class="field">
-                    <label>¿Se incorpora conocimiento indígena y local?</label>
-                    <select><option>Sí</option><option>No</option><option>No identificado</option></select>
-                  </div>
+                  
                   <div class="field full">
                     <label>Mapeo de CIL · Conocimiento Indígena y Local</label>
                     <textarea style="min-height:80px" placeholder="Registrar conocimientos, prácticas, usos, saberes y actores locales o indígenas relevantes para la restauración."></textarea>
@@ -448,7 +477,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                 <p class="category-description">Registrar la escala de participación, el mapeo estructurado de actores y el modelo de participación utilizado.</p>
 
                 <div class="field">
-                  <label>Escala de participación <span class="req">*</span></label>
+                  <label>Escala de participación</label>
                   <div class="choice-row">
                     <button class="choice selected">Informativa</button>
                     <button class="choice">Consultiva</button>
@@ -468,10 +497,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                       <option>Participación ejecutiva</option>
                     </select>
                   </div>
-                  <div class="field">
-                    <label>Instancia / mecanismo de participación</label>
-                    <input placeholder="Mesa, taller, comité, consulta u otra instancia">
-                  </div>
+                  
                 </div>
 
                 <div class="subsection-title">Mapeo estructurado de actores</div>
@@ -507,19 +533,8 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                 <div class="category-head"><span>2.4</span><strong>Gobernanza ampliada</strong></div>
                 <p class="category-description">Caracterizar las estructuras de gobernanza, coordinación multinivel y mecanismos para resolver conflictos.</p>
                 <div class="grid">
-                  <div class="field">
-                    <label>Estructura de gobernanza</label>
-                    <select>
-                      <option>Local</option>
-                      <option>Regional</option>
-                      <option selected>Local y regional</option>
-                      <option>Multinivel</option>
-                    </select>
-                  </div>
-                  <div class="field">
-                    <label>Comité / instancia de gobernanza</label>
-                    <input value="Mesa de restauración local">
-                  </div>
+                  
+                  
                   <div class="field">
                     <label>Comité Técnico Regional / Local</label>
                     <select><option>Existe</option><option>No existe</option><option>En formación</option><option>No aplica</option></select>
@@ -562,10 +577,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                     <label>Disponibilidad de propágulos / regeneración</label>
                     <textarea style="min-height:90px" placeholder="Disponibilidad de propágulos, regeneración natural y condiciones para sostener la recuperación."></textarea>
                   </div>
-                  <div class="field full">
-                    <label>Vulnerabilidad de la UR</label>
-                    <select><option>Baja</option><option>Media</option><option>Alta</option><option>Muy alta</option></select>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -585,7 +597,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                 <div class="grid">
                   <div class="field full">
                     <label>Causa de degradación dominante <span class="req">*</span></label>
-                    <select>
+                    <select id="cd" onchange="cdToggle()">
                       <option>CD01 – Fragmentación de hábitat</option>
                       <option selected>CD02 – Incendios</option>
                       <option>CD03 – Sobreexplotación y extracción de biomasa</option>
@@ -593,7 +605,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                       <option>CD05 – Especies exóticas invasoras</option>
                       <option>CD06 – Cambio de uso de suelo</option>
                       <option>CD07 – Erosión y degradación de suelos</option>
-                      <option>CD08 – Alteración de la calidad del suelo, agua o aire</option>
+                      <option>CD08 – Contaminación</option>
                       <option>CD09 – Alteración del régimen hidrológico</option>
                       <option>CD10 – Cambio climático</option>
                       <option>CD11 – Plagas y patógenos</option>
@@ -602,7 +614,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                     </select>
                     <div class="help">Selección desde vocabulario controlado para permitir comparación y agregación territorial.</div>
                   </div>
-                  <div class="field full"><label>Otra causa de degradación <span class="opt">se habilita con CD13</span></label><input placeholder="Describir la causa no contemplada en el catálogo"></div>
+                  <div class="field full"><label>Otra causa de degradación <span class="opt">se habilita con CD13</span></label><input id="cdOtra" disabled placeholder="Describir la causa no contemplada en el catálogo"></div>
                   <div class="field full"><label>Evidencia / observación</label><textarea style="min-height:90px" placeholder="Antecedentes que respaldan la causa seleccionada."></textarea></div>
                 </div>
               </div>
@@ -667,6 +679,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                   <tbody>
                     <tr><td>2026-08-14</td><td>Supervivencia de plantación</td><td><b>78</b></td><td>%</td><td>Muestreo de parcelas</td><td>Equipo de monitoreo</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
                     <tr><td>2026-08-14</td><td>Cobertura vegetal</td><td><b>64</b></td><td>%</td><td>Transectos</td><td>Equipo de monitoreo</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
+                    <tr><td>2026-05-10</td><td>Superficie bajo restauración</td><td><b>42,6</b></td><td>ha</td><td>Calculado desde el polígono</td><td>Plataforma (derivado)</td><td><button class="btn" onclick="toast('Evento abierto')">Ver</button></td></tr>
                   </tbody>
                 </table>
                 <div style="margin-top:13px"><button class="btn primary" onclick="toast('Formulario de nuevo evento abierto')">＋ Registrar evento de monitoreo</button></div>
@@ -685,25 +698,6 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
                   <label class="check"><input type="checkbox"> Otros indicadores sociales, económicos, de gobernanza, género y culturales</label>
                 </div>
               </div>
-
-              <div class="category-card">
-                <div class="category-head"><span>5.2</span><strong>Monitoreo de riesgos y contingencias</strong></div>
-                <div class="grid">
-                  <div class="field"><label>Riesgo / amenaza monitoreada</label><select><option>Incendio</option><option>Sequía</option><option>Erosión</option><option>Especies invasoras</option><option>Otro</option></select></div>
-                  <div class="field"><label>Estado</label><select><option>Sin alerta</option><option>En observación</option><option>Alerta</option><option>Contingencia activada</option></select></div>
-                  <div class="field full"><label>Medida de contingencia / respuesta</label><textarea style="min-height:65px"></textarea></div>
-                </div>
-              </div>
-
-              <div class="category-card">
-                <div class="category-head"><span>5.3</span><strong>Seguimiento y aprendizajes de la iniciativa</strong></div>
-                <div class="grid">
-                  <div class="field"><label>Avance respecto de los objetivos</label><select><option>Inicial</option><option selected>En progreso</option><option>Avanzado</option><option>Consolidado</option></select></div>
-                  <div class="field"><label>Necesidad de ajuste</label><select><option>No</option><option>Sí</option></select></div>
-                  <div class="field full"><label>Aprendizajes / lecciones</label><textarea style="min-height:80px"></textarea></div>
-                  <div class="field full"><label>Decisiones o ajustes para la siguiente etapa</label><textarea style="min-height:80px"></textarea></div>
-                </div>
-              </div>
             </div>
 
           </div>
@@ -717,7 +711,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
           <div class="card-body">
             <div class="grid three">
               <div class="field"><label>Unidad de Restauración <span class="req">*</span></label><select><option>UR-001 · Bosque costero</option></select></div>
-              <div class="field"><label>Fecha de medición <span class="req">*</span></label><input type="date" value="2026-10-06"></div>
+              <div class="field" id="fMedBox"><label>Fecha de medición <span class="req">*</span></label><input id="fMed" type="date" value="2026-10-06" onchange="validate()"><div class="errmsg">Debe ser igual o posterior al inicio de la UR (2025-03-01) y no superar la fecha actual.</div></div>
               <div class="field"><label>Indicador <span class="req">*</span></label><select><option>Supervivencia de plantación</option><option>Cobertura vegetal</option><option>Riqueza de especies nativas</option><option>Superficie bajo restauración</option><option>Superficie con control efectivo de invasoras</option><option>Proporción de material vegetal con procedencia trazable</option><option>UR con monitoreo vigente</option></select></div>
               <div class="field"><label>Valor <span class="req">*</span></label><input value="82" type="number"></div>
               <div class="field"><label>Unidad</label><input value="%" disabled></div>
@@ -738,6 +732,7 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
             <tr><td>Superficie con control efectivo de invasoras</td><td>ha</td><td>UR → nacional</td><td>PNRP</td></tr>
             <tr><td>Proporción de material vegetal con procedencia trazable</td><td>%</td><td>UR → nacional</td><td>Trazabilidad</td></tr>
             <tr><td>UR con monitoreo vigente</td><td>%</td><td>Regional → nacional</td><td>Regla de seguimiento</td></tr>
+            <tr><td>Otros indicadores (sociales, económicos, de gobernanza, de género y culturales)</td><td>Por definir</td><td>UR</td><td>Por definir</td></tr>
           </tbody></table></div>
         </div>
       </section>
@@ -758,8 +753,11 @@ input,select,textarea{border-radius:2px}.info{border-radius:2px}
             <div class="review">✓ Ecosistema, estrategia y causa de degradación definidos.</div>
             <div class="review">✓ Actividades con superficie de aplicación asociada.</div>
             <div class="review">✓ Evento de monitoreo con indicador, valor, unidad, método y fuente.</div>
+            <div class="review">✓ Coherencia temporal: fechas de término y de medición consistentes con el inicio.</div>
+            <div class="review">✓ Sin solape con UR de otros titulares (verificación simulada).</div>
+            <div class="review">✓ Campos de Nivel 1 completos; Nivel 2 facultativo.</div>
             <div class="review warn">! Campo opcional pendiente: evidencia adicional del modelo de referencia.</div>
-            <div class="info" style="margin-top:16px"><b>Flujo propuesto:</b> Guardar borrador → enviar a validación → revisión técnica/institucional → publicación. La validación se mantiene como parte del flujo y no como un campo de la ficha.</div>
+            <div class="info" style="margin-top:16px"><b>Flujo propuesto:</b> Guardar borrador → enviar a validación → revisión técnica/institucional → publicación. La validación se mantiene como parte del flujo y no como un campo de la ficha. Roles: quien sube datos → editor/administrador temático → administrador.</div>
             <label class="check" style="margin-bottom:12px"><input type="checkbox" id="agree"> Declaro que la información ingresada cuenta con respaldo y autorización para su registro.</label>
             <button class="btn secondary" onclick="submitDemo()">Enviar a validación institucional</button>
           </div>
@@ -801,12 +799,31 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2400)}
 function addActivity(){
   const tb=document.getElementById('activityRows');const tr=document.createElement('tr');
-  tr.innerHTML='<td>AC08 – Trabajo con comunidades locales</td><td>8,5</td><td>2026-03</td><td><span class="badge yellow">Planificada</span></td><td><button class="btn" onclick="toast(\'Actividad editada\')">Editar</button></td>';tb.appendChild(tr);toast('Actividad agregada');
+  tr.innerHTML='<td>AC08 – Trabajo con comunidades locales</td><td>8,5</td><td>2026-03</td><td>—</td><td><span class="badge yellow">Planificada</span></td><td><button class="btn" onclick="toast(\'Actividad editada\')">Editar</button></td>';tb.appendChild(tr);toast('Actividad agregada');
 }
 function submitDemo(){
   if(!document.getElementById('agree').checked){toast('Marca la declaración antes de enviar');return}
   toast('Demo: iniciativa enviada a validación institucional');
 }
+function setLevel(n){
+  document.body.classList.toggle('only-n1',n===1);
+  document.getElementById('lv1').classList.toggle('on',n===1);document.getElementById('lv2').classList.toggle('on',n===2);
+  if(n===1&&document.querySelector('.tab.active.n2'))document.querySelector('.tab[data-tab=d1]').click();
+}
+document.querySelectorAll('.choice-row').forEach(row=>row.addEventListener('click',e=>{
+  const b=e.target.closest('.choice');if(!b)return;
+  row.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
+  if(row.id==='objRow')document.getElementById('svcBlock').style.display=b.textContent.trim()==='Servicios ecosistémicos'?'block':'none';
+}));
+function ccToggle(){document.getElementById('ccTxt').style.display=document.getElementById('cc').value==='Sí'?'block':'none'}
+function refToggle(){const i=document.getElementById('refSite');i.disabled=document.getElementById('refSrc').value!=='Sitio de referencia en terreno'}
+function cdToggle(){const i=document.getElementById('cdOtra');i.disabled=!document.getElementById('cd').value.startsWith('CD13')}
+function validate(){
+  const ini=fIni.value,fin=fFin.value,med=fMed.value,hoy=new Date().toISOString().slice(0,10);
+  fFinBox.classList.toggle('err',!!(fin&&ini&&fin<ini));
+  fMedBox.classList.toggle('err',!!(med&&(med<'2025-03-01'||med>hoy)));
+}
+setLevel(1);
 showStep(1);
 </script>
 </body>

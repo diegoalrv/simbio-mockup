@@ -149,6 +149,7 @@ td select{padding:3px 6px;font-size:13px}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shpjs/4.0.4/shp.min.js"></script>
 </head>
 <body>
 <div class="brandbar">
@@ -190,7 +191,7 @@ td select{padding:3px 6px;font-size:13px}
             <ol class="howto">
               <li><div><b>Elija el nivel de la ficha</b><small>Más abajo. El <b>Nivel 1</b> es el registro básico obligatorio; el <b>Nivel 2</b> agrega profundización facultativa. Puede empezar en Nivel 1 y completar el Nivel 2 después.</small></div></li>
               <li><div><b>Identifique la iniciativa</b><small>Nombre, responsable y organización, mandante y ejecutor con su tipo de entidad, período, estado de avance y alcance (si es parte de un programa, indique cuál).</small></div></li>
-              <li><div><b>Delimite las Unidades de Restauración</b><small>Dibuje el polígono en el mapa o importe un GeoJSON. La superficie, región, comuna, cuenca, ecosistema y cruces territoriales se calculan automáticamente (⚙). Si cambia el ecosistema, la causa de degradación, la estrategia o el año de inicio, cree otra UR.</small></div></li>
+              <li><div><b>Delimite las Unidades de Restauración</b><small>Dibuje el polígono en el mapa o importe un archivo (GeoJSON, KML o Shapefile .zip). La superficie, región, comuna, cuenca, ecosistema y cruces territoriales se calculan automáticamente (⚙). Si cambia el ecosistema, la causa de degradación, la estrategia o el año de inicio, cree otra UR.</small></div></li>
               <li><div><b>Caracterice cada UR en cinco dimensiones</b><small>1 Estrategia de intervención (ecosistema de referencia, estrategia, objeto, año) · 2 Socio-ecológico y gobernanza (solo en Nivel 1+2) · 3 Diagnóstico de la degradación · 4 Actividades con superficie de aplicación · 5 Seguimiento.</small></div></li>
               <li><div><b>Registre eventos de monitoreo</b><small>Cada medición es un evento: UR + fecha + indicador + valor + unidad + método + fuente. Los indicadores agregados (regional, nacional, FERM) se calculan a partir de los eventos registrados. Puede agregar eventos durante toda la vida de la UR.</small></div></li>
               <li><div><b>Revise y envíe a validación</b><small>Guarde borradores cuando quiera. Al enviar, un editor temático y luego un administrador revisan la ficha antes de publicarla en SIMBIO.</small></div></li>
@@ -315,10 +316,11 @@ td select{padding:3px 6px;font-size:13px}
             </div>
             <div class="maptools">
               <button class="btn primary" id="drawBtn" onclick="startDraw()">＋ Dibujar polígono</button>
-              <button class="btn" onclick="document.getElementById('geoFile').click()">⇧ Importar GeoJSON</button><input type="file" id="geoFile" accept=".geojson,.json" style="display:none" onchange="importGeo(this)">
+              <button class="btn" title="Formatos permitidos: GeoJSON (.geojson, .json), KML (.kml) y Shapefile (.zip con .shp, .shx, .dbf y .prj)" onclick="document.getElementById('geoFile').click()">⇧ Importar desde archivo <span class="tip" aria-hidden="true">ⓘ</span></button><input type="file" id="geoFile" accept=".geojson,.json,.kml,.zip,.shp" style="display:none" onchange="importGeo(this)">
               <button class="btn" onclick="calcArea(true)">▣ Calcular superficie</button>
               <button class="btn" onclick="toast('Cruces territoriales ejecutados')">⌘ Ejecutar geoprocesos</button>
             </div>
+            <div class="help">Formatos permitidos para importar: <b>GeoJSON</b>, <b>KML</b> y <b>Shapefile</b> (.zip con .shp, .shx, .dbf y .prj, en WGS84). Se carga el primer polígono del archivo.</div>
           </div>
         </div>
         <div class="card">
@@ -953,7 +955,27 @@ function startDraw(){if(!map){toast('Mapa no disponible');return}if(drawing){fin
 function finishDraw(){drawing=false;document.getElementById('mapbox').classList.remove('drawing');document.getElementById('drawBtn').textContent='＋ Dibujar polígono';map.doubleClickZoom.enable();if(tmp){map.removeLayer(tmp);tmp=null}if(pts.length>=3){setUR(pts);toast('Polígono de la UR actualizado · '+fmtHa(polyAreaHa(ur.getLatLngs()[0]))+' ha')}else toast('Se necesitan al menos 3 vértices')}
 if(map){map.on('click',e=>{if(!drawing)return;pts.push(e.latlng);if(tmp)map.removeLayer(tmp);tmp=L.polyline(pts,{color:'#ffc107',weight:2,dashArray:'4 4'}).addTo(map)});
 map.on('dblclick',e=>{if(drawing)finishDraw()});}
-function importGeo(inp){const f=inp.files[0];if(!f||!map)return;f.text().then(t=>{const g=JSON.parse(t);const feat=g.type==='FeatureCollection'?g.features[0]:g;const geom=feat.geometry||feat;const ring=(geom.type==='MultiPolygon'?geom.coordinates[0][0]:geom.coordinates[0]).map(c=>L.latLng(c[1],c[0]));setUR(ring);map.fitBounds(ur.getBounds().pad(.4));toast('GeoJSON importado · '+fmtHa(polyAreaHa(ur.getLatLngs()[0]))+' ha')}).catch(()=>toast('No se pudo leer el GeoJSON'));inp.value=''}
+function firstRing(g){
+  const feats=g.type==='FeatureCollection'?g.features:Array.isArray(g)?g.flatMap(x=>x.features||[x]):g.type==='Feature'?[g]:[{geometry:g}];
+  for(const f of feats){const geom=f&&f.geometry;if(!geom)continue;
+    if(geom.type==='Polygon')return geom.coordinates[0].map(c=>L.latLng(c[1],c[0]));
+    if(geom.type==='MultiPolygon')return geom.coordinates[0][0].map(c=>L.latLng(c[1],c[0]))}
+  throw new Error('sin polígonos')}
+function kmlToRing(txt){
+  const doc=new DOMParser().parseFromString(txt,'text/xml');if(doc.querySelector('parsererror'))throw new Error('kml inválido');
+  const el=doc.getElementsByTagName('coordinates')[0];if(!el)throw new Error('sin coordenadas');
+  const ring=el.textContent.trim().split(/\s+/).map(p=>p.split(',').map(Number)).filter(c=>c.length>=2&&!isNaN(c[0])).map(c=>L.latLng(c[1],c[0]));
+  if(ring.length<3)throw new Error('sin polígonos');return ring}
+function importGeo(inp){
+  const f=inp.files[0];if(!f||!map)return;const ext=f.name.split('.').pop().toLowerCase();
+  const done=ring=>{setUR(ring);map.fitBounds(ur.getBounds().pad(.4));toast('Archivo importado ('+f.name+') · '+fmtHa(polyAreaHa(ur.getLatLngs()[0]))+' ha')};
+  let p;
+  if(ext==='geojson'||ext==='json')p=f.text().then(t=>firstRing(JSON.parse(t)));
+  else if(ext==='kml')p=f.text().then(kmlToRing);
+  else if(ext==='zip'){if(!window.shp){toast('No se pudo cargar el lector de Shapefile (sin conexión)');inp.value='';return}p=f.arrayBuffer().then(b=>shp(b)).then(firstRing)}
+  else if(ext==='shp'){toast('Un .shp suelto no basta: suba el Shapefile comprimido en .zip (.shp, .shx, .dbf y .prj)');inp.value='';return}
+  else{toast('Formato no permitido. Use GeoJSON, KML o Shapefile (.zip)');inp.value='';return}
+  p.then(done).catch(()=>toast('No se pudo leer el archivo: verifique que contenga un polígono en WGS84'));inp.value=''}
 </script>
 </body>
 </html>

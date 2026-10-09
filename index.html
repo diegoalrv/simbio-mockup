@@ -5,149 +5,163 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIMBIO · Registro de iniciativa de restauración</title>
 <style>
+/* Tokens tomados de simbio.mma.gob.cl (Bootstrap 4, tema oscuro) */
 :root{
-  --navy:#123f4d; --navy2:#0d3440; --green:#4d8b61; --green2:#6da47c;
-  --mint:#e9f3ed; --teal:#2f7f7b; --yellow:#e8b83d; --bg:#f4f6f5;
-  --text:#26363a; --muted:#6d7b7e; --border:#d9e0df; --white:#fff;
-  --danger:#b9564f; --shadow:0 8px 24px rgba(20,45,50,.08);
+  --dark:#1d2132; --darker:#101425; --panel:#242838; --secondary:#393d4b; --line:#2f3345;
+  --primary:#009ecb; --primary-dk:#007899; --info-bg:#d1ecf1; --info-tx:#0c5460; --info-bd:#bee5eb;
+  --danger:#e94860; --warning:#ffc107; --success:#28a745;
+  --text:#fff; --muted:rgba(255,255,255,.6); --muted2:rgba(255,255,255,.45);
+  --input-bg:#fff; --input-tx:#495057; --input-bd:#ced4da;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
 }
-*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit} button{cursor:pointer}
-.topbar{height:66px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:22px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy);font-size:18px}
-.logo-mark{width:38px;height:38px;border-radius:50%;background:var(--navy);display:grid;place-items:center;color:#fff;font-weight:800}
-.topnav{display:flex;gap:20px;color:#52676b;font-size:14px}.topnav span:first-child{color:var(--navy);font-weight:700}
-.user{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:13px;color:#5c6d70}
-.avatar{width:32px;height:32px;border-radius:50%;background:#dbe9e0;display:grid;place-items:center;color:var(--green);font-weight:bold}
-.header{background:var(--navy);color:#fff;padding:25px 38px 27px}
-.header-inner{max-width:1450px;margin:auto}.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
-.header h1{margin:7px 0 6px;font-size:26px;font-weight:600}.header p{margin:0;opacity:.82;font-size:14px}
-.wrap{max-width:1450px;margin:0 auto;padding:22px 28px 60px}
-.stepper{display:flex;align-items:center;margin-bottom:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 14px;box-shadow:var(--shadow)}
-.step{display:flex;align-items:center;gap:8px;padding:8px 12px;color:#839093;font-size:13px;white-space:nowrap}
-.step .n{width:27px;height:27px;border-radius:50%;border:1px solid #c9d2d1;display:grid;place-items:center;font-weight:bold}
-.step.active{color:var(--navy);font-weight:700}.step.active .n{background:var(--green);color:#fff;border-color:var(--green)}
-.step.done .n{background:#dcebe1;color:var(--green);border-color:#c7ddd0}
-.sep{height:1px;background:#dfe5e4;flex:1;min-width:10px}
-.layout{display:grid;grid-template-columns:270px 1fr;gap:20px}
-.side{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);height:max-content;position:sticky;top:15px}
-.side-title{padding:16px 18px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--border)}
-.side-item{padding:13px 17px;border-bottom:1px solid #edf0ef;font-size:13px;display:flex;gap:10px;align-items:flex-start;color:#657578}
-.side-item.active{background:var(--mint);color:var(--navy);font-weight:700;border-left:4px solid var(--green);padding-left:13px}
-.side-item .num{width:23px;height:23px;border-radius:50%;background:#eef2f1;display:grid;place-items:center;font-size:11px;font-weight:bold;flex:none}
-.side-item.active .num{background:var(--green);color:#fff}
-.card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
-.card-head{padding:18px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.card-head h2{font-size:18px;margin:0;color:var(--navy)}.card-head p{margin:5px 0 0;font-size:12px;color:var(--muted)}
-.card-body{padding:21px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px;color:#415458}.req{color:var(--danger);margin-left:3px}.opt{font-weight:400;color:#94a0a2;margin-left:4px}
-input,select,textarea{width:100%;border:1px solid #cfd9d7;border-radius:7px;padding:10px 11px;background:#fff;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(47,127,123,.1)}
-textarea{min-height:88px;resize:vertical}.help{font-size:11px;color:#879496;margin-top:5px}
-.full{grid-column:1/-1}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:20px;background:#edf5ef;color:var(--green);font-size:11px;font-weight:bold}
-.badge.yellow{background:#fff5d9;color:#9a7415}.badge.gray{background:#f0f2f2;color:#68777a}
-.info{background:#f0f6f3;border-left:4px solid var(--green);padding:12px 14px;border-radius:6px;font-size:12px;line-height:1.5;color:#486066;margin-bottom:18px}
-.warn{background:#fff8e6;border-left-color:var(--yellow)}
-.mapbox{height:430px;border:1px solid #cad8d5;border-radius:9px;overflow:hidden;position:relative;background:#dce8e5}
-.mapbg{position:absolute;inset:0;background:
-linear-gradient(25deg,transparent 49%,rgba(255,255,255,.7) 50%,transparent 51%) 0 0/95px 95px,
-linear-gradient(115deg,transparent 49%,rgba(255,255,255,.6) 50%,transparent 51%) 0 0/130px 130px,
-#dbe8e5}
-.river{position:absolute;width:120%;height:80px;left:-10%;top:47%;background:#a8d3d4;transform:rotate(-9deg);border-top:2px solid #79b7ba;border-bottom:2px solid #79b7ba;opacity:.85}
-.road{position:absolute;height:3px;background:#fff;opacity:.9;transform-origin:left}
-.r1{left:4%;top:20%;width:75%;transform:rotate(18deg)}.r2{left:23%;top:82%;width:72%;transform:rotate(-22deg)}.r3{left:35%;top:5%;width:55%;transform:rotate(62deg)}
-.poly{position:absolute;left:33%;top:22%;width:39%;height:48%;background:rgba(77,139,97,.35);border:3px solid var(--green);clip-path:polygon(9% 17%,58% 4%,91% 27%,78% 84%,44% 96%,14% 75%);box-shadow:0 0 0 2px rgba(255,255,255,.5)}
-.maplabel{position:absolute;left:36%;top:42%;background:#fff;padding:6px 9px;border-radius:5px;box-shadow:0 2px 7px #789; font-size:11px;font-weight:bold;color:var(--navy)}
-.map-controls{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:5px}.map-controls button{width:31px;height:31px;border:1px solid #ccd6d4;background:#fff;border-radius:5px}
-.map-footer{position:absolute;left:10px;bottom:8px;background:rgba(255,255,255,.9);font-size:10px;padding:4px 6px;color:#617174}
-.maptools{display:flex;gap:8px;margin-top:10px}.btn{border:1px solid #cbd6d4;background:#fff;color:var(--navy);padding:9px 13px;border-radius:7px;font-size:12px;font-weight:700}.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}.btn.secondary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.danger{color:var(--danger)}
-.dimtabs{display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding:0 21px}
-.tab{padding:13px 11px;font-size:12px;color:#708083;border-bottom:3px solid transparent;background:none;border-top:0;border-left:0;border-right:0}
-.tab.active{color:var(--navy);font-weight:bold;border-bottom-color:var(--green)}
-.dim{display:none}.dim.active{display:block}
-.section-title{font-size:14px;color:var(--navy);font-weight:700;margin:0 0 13px}.mini-card{border:1px solid #dce4e2;border-radius:8px;padding:14px;margin-bottom:12px;background:#fbfcfc}
-.choice-row{display:flex;gap:9px;flex-wrap:wrap}.choice{border:1px solid #cfd9d7;border-radius:7px;padding:9px 11px;font-size:12px;background:#fff}.choice.selected{border-color:var(--green);background:#edf6ef;color:#356d48;font-weight:bold}
-.checkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.check{border:1px solid #d6dfdd;border-radius:7px;padding:10px;font-size:12px;display:flex;gap:8px}.check input{width:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e4e9e8}th{background:#f4f7f6;color:#536568;font-size:11px;text-transform:uppercase}
-.progressbar{height:8px;background:#e7eceb;border-radius:10px;overflow:hidden}.progressbar span{display:block;height:100%;background:var(--green);width:68%}
-.footer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:18px}.right-actions{display:flex;gap:8px}
-.toast{position:fixed;right:24px;bottom:24px;background:var(--navy);color:#fff;padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);display:none;font-size:13px;z-index:20}
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}.metric{background:#f7f9f8;border:1px solid #e1e7e5;border-radius:8px;padding:13px}.metric strong{display:block;font-size:19px;color:var(--navy)}.metric span{font-size:10px;color:#758487}
-.review{border-left:4px solid var(--green);padding:11px 13px;background:#f3f8f4;margin:8px 0;font-size:12px}.review.warn{border-left-color:var(--yellow);background:#fff9eb}
-.hidden{display:none!important}
-@media(max-width:1000px){.layout{grid-template-columns:1fr}.side{position:static}.grid,.grid.three{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.stepper{overflow:auto}.topnav{display:none}}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--dark);color:var(--text);font-size:14.4px;line-height:1.5}
+button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:var(--primary)}
 
-/* --- Ajuste visual basado en la Plataforma Políticas de la Biodiversidad / SIMBIO --- */
-body{background:#202334;color:#27333a}
-.topbar{height:72px;background:#202334;border-bottom:1px solid #34394c;padding:0 34px;gap:22px}
-.brand-block{min-width:350px}.brand-title{color:#f2f2f2;font-size:14px;letter-spacing:.055em;font-weight:600;line-height:1.25}
-.topnav{gap:18px;color:#bfc3cd;font-size:12px;align-self:stretch;align-items:center}
-.topnav span{padding:28px 0 24px}.topnav span:first-child{color:#fff;font-weight:600}
-.search-top{margin-left:auto;display:flex;height:29px}.search-top input{width:205px;border-radius:2px 0 0 2px;border:1px solid #c8cbd0;padding:6px 9px;font-size:11px;background:#fff}.search-top button{width:32px;border:0;background:#fff;border-left:1px solid #ddd;color:#263044;border-radius:0 2px 2px 0}
-.login-top{display:flex;gap:7px;align-items:center;color:#c7cad2;font-size:11px}.toggle{width:27px;height:15px;background:#6c7180;border-radius:12px;display:inline-block;position:relative}.toggle:after{content:"";position:absolute;width:11px;height:11px;background:#fff;border-radius:50%;left:2px;top:2px}
-.header{background:#202334;padding:24px 38px 26px;border-bottom:4px solid #3b9187}
-.crumb{font-size:11px;color:#8f95a5;margin-bottom:12px}.header h1{font-size:25px;color:#fff;margin:0 0 7px;font-weight:500}.header p{font-size:13px;color:#c5c8d0}
-.wrap{max-width:1260px;padding:20px 24px 55px}
-.layout{display:block}
-.side{display:none}
-.stepper{background:#202334;border:1px solid #3a3f51;box-shadow:none;border-radius:2px;padding:0 12px;margin-bottom:18px}
-.step{color:#9da2b1;padding:13px 10px;font-size:12px}.step .n{width:24px;height:24px;background:#2d3243;border-color:#53596a;color:#b7bcc7}
-.step.active{color:#fff}.step.active .n{background:#3b9187;border-color:#3b9187}.step.done{color:#c8d9d5}.step.done .n{background:#315e5a;border-color:#315e5a;color:#fff}
-.sep{background:#424758}
-.card{border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.18);border-color:#d8dcdf}
-.card-head{padding:16px 20px;background:#f7f7f7}.card-head h2{font-size:17px;font-weight:500}.card-head p{font-size:11px}
-.card-body{padding:20px}
-.badge{border-radius:2px}.btn{border-radius:2px}.btn.primary{background:#378c83;border-color:#378c83}.btn.secondary{background:#252a3a;border-color:#252a3a}
-input,select,textarea{border-radius:2px}.info{border-radius:2px}
-.dimtabs{background:#f5f5f5;padding:0 18px}.tab{font-size:11px;padding:12px 10px}.tab.active{color:#1f665f;border-bottom-color:#378c83}
-.footer-actions{margin-top:16px}.footer-actions .btn{background:#fff}.footer-actions .btn.primary{background:#378c83;color:#fff}
-.footer-actions .right-actions .btn:first-child{color:#27333a}
-.toast{border-radius:2px;background:#252a3a}
+/* ---- Cabecera SIMBIO ---- */
+.brandbar{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:26px;padding:8px 16px;min-height:112px}
+.brandbar img{width:130px;height:auto;display:block}
+.brandbar h3{flex:1;text-align:center;margin:0;font-size:28px;font-weight:500;color:#fff}
+.navbar{border-top:1px solid var(--secondary);border-bottom:1px solid var(--secondary);box-shadow:0 .5rem 1rem rgba(0,0,0,.15)}
+.navbar-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;padding:0 4px;height:42px;gap:0}
+.navbar-inner .nl{color:rgba(255,255,255,.5);padding:8px;font-size:16.64px;text-decoration:none}
+.navbar-inner .nl.active,.navbar-inner .nl:hover{color:rgba(255,255,255,.75)}
+.navbar-inner .nl.dd:after{content:"";display:inline-block;margin-left:5px;border-top:5px solid;border-left:4px solid transparent;border-right:4px solid transparent;vertical-align:2px}
+.navsearch{margin-left:auto;display:flex}
+.navsearch input{width:200px;height:31px;border:1px solid var(--input-bd);border-radius:3.2px 0 0 3.2px;padding:4px 8px;font-size:14px;background:var(--input-bg);color:var(--input-tx)}
+.navsearch button{height:31px;width:34px;border:1px solid var(--secondary);border-left:0;background:transparent;color:#fff;border-radius:0 3.2px 3.2px 0;font-size:14px}
+.navicon{color:rgba(255,255,255,.5);font-size:20px;padding:0 10px}
 
+/* ---- Contenido ---- */
+.container{max-width:1140px;margin:0 auto;padding:16px 16px 40px}
+.pagehead{position:relative;text-align:center;margin:4px 0 14px}
+.pagehead h1{font-size:28px;font-weight:500;margin:0 0 6px;color:#fff}
+.pagehead p{margin:0;color:var(--muted);font-size:14px}
+.pagehead .back{position:absolute;right:0;top:8px;font-size:13px;color:var(--primary);text-decoration:none}
+.alert-info{background:var(--info-bg);color:var(--info-tx);border:1px solid var(--info-bd);border-radius:4px;padding:12px 20px;font-size:14px;line-height:1.5;margin-bottom:16px}
 
-
-
-.dimension-banner{display:flex;gap:12px;align-items:center;background:#f3f7f5;border:1px solid #d7e2de;padding:12px 14px;margin-bottom:14px}
-.dimension-number{width:30px;height:30px;border-radius:50%;background:#378c83;color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
-.dimension-banner strong{display:block;color:#1f665f;font-size:14px}.dimension-banner small{display:block;color:#718083;font-size:11px;margin-top:3px}
-.category-card{border:1px solid #d8e1df;background:#fff;margin:0 0 13px;padding:14px}
-.category-head{display:flex;align-items:center;gap:9px;color:#243e43;font-size:13px;margin-bottom:13px;padding-bottom:9px;border-bottom:1px solid #e8edec}
-.category-head span{font-size:10px;font-weight:700;color:#378c83;background:#edf5f2;border:1px solid #cfe1dc;padding:3px 6px}
-.category-card .info{margin-bottom:13px}
-
-
-.category-description{font-size:12px;color:#68777a;line-height:1.45;margin:-4px 0 14px}
-.subsection-title{font-size:12px;font-weight:700;color:#38565a;margin:18px 0 9px;padding-top:12px;border-top:1px solid #e6ecea}
-
+/* Nivel */
+.levelbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;font-size:13px;color:var(--muted)}
+.levelbar b{color:#fff;font-weight:500}
+.levelbar .seg{display:flex;border:1px solid var(--secondary);border-radius:4px;overflow:hidden}
+.levelbar .seg button{border:0;background:transparent;padding:6px 12px;font-size:13px;color:var(--primary)}
+.levelbar .seg button.on{background:var(--primary);color:#fff}
 body.only-n1 .n2{display:none!important}
-.levelbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:12px;color:#52676b}
-.levelbar .seg{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.levelbar .seg button{border:0;background:#fff;padding:7px 12px;font-size:12px;color:#52676b}
-.levelbar .seg button.on{background:var(--green);color:#fff;font-weight:700}
-.tip{cursor:help;color:var(--teal);font-weight:400;margin-left:4px;font-size:12px}
-.errmsg{color:var(--danger);font-size:11px;margin-top:5px;display:none}
+
+/* Stepper */
+.stepper{display:flex;align-items:center;border:1px solid var(--secondary);border-radius:4px;padding:0 10px;margin-bottom:18px;background:var(--panel)}
+.step{display:flex;align-items:center;gap:8px;padding:12px 10px;color:var(--muted);font-size:13px;white-space:nowrap;cursor:pointer}
+.step .n{width:24px;height:24px;border-radius:50%;border:1px solid var(--secondary);display:grid;place-items:center;font-weight:700;font-size:12px;color:var(--muted)}
+.step.active{color:#fff;font-weight:500}.step.active .n{background:var(--primary);border-color:var(--primary);color:#fff}
+.step.done{color:rgba(255,255,255,.8)}.step.done .n{background:var(--primary-dk);border-color:var(--primary-dk);color:#fff}
+.sep{height:1px;background:var(--secondary);flex:1;min-width:10px}
+.layout{display:block}.side{display:none}
+
+/* Tarjetas (en SIMBIO las fichas no tienen fondo propio) */
+.card{border:1px solid var(--line);border-radius:4px;margin-bottom:18px;background:transparent}
+.card-head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.card-head h2{font-size:20px;margin:0;font-weight:500;color:#fff}.card-head p{margin:3px 0 0;font-size:12.5px;color:var(--muted)}
+.card-body{padding:20px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.full{grid-column:1/-1}
+.field label{display:block;font-size:14px;font-weight:500;margin-bottom:6px;color:#fff}
+.req{color:var(--danger);margin-left:3px}.opt{font-weight:400;color:var(--muted2);margin-left:4px;font-size:12px}
+input,select,textarea{width:100%;border:1px solid var(--input-bd);border-radius:3.2px;padding:6px 10px;background:var(--input-bg);color:var(--input-tx);outline:none;font-size:14px}
+input:focus,select:focus,textarea:focus{border-color:#80bdff;box-shadow:0 0 0 .2rem rgba(0,158,203,.25)}
+input:disabled,select:disabled{background:#e9ecef;color:#6c757d}
+textarea{min-height:84px;resize:vertical}
+.help{font-size:12px;color:var(--muted);margin-top:5px}
+.tip{cursor:help;color:var(--primary);font-weight:400;margin-left:4px;font-size:13px}
+.errmsg{color:var(--danger);font-size:12px;margin-top:5px;display:none}
 .field.err input{border-color:var(--danger)}.field.err .errmsg{display:block}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:4px;background:var(--primary);color:#fff;font-size:11px;font-weight:700;white-space:nowrap}
+.badge.yellow{background:var(--warning);color:#212529}.badge.gray{background:var(--secondary);color:#fff}
+.info{background:var(--panel);border-left:4px solid var(--primary);padding:12px 14px;border-radius:0 4px 4px 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.85);margin-bottom:18px}
+.warn{border-left-color:var(--warning)}
+
+/* Mapa (simulación) */
+.mapbox{height:430px;border:1px solid var(--secondary);border-radius:4px;overflow:hidden;position:relative;background:#2a3142}
+.mapbg{position:absolute;inset:0;background:
+linear-gradient(25deg,transparent 49%,rgba(255,255,255,.12) 50%,transparent 51%) 0 0/95px 95px,
+linear-gradient(115deg,transparent 49%,rgba(255,255,255,.1) 50%,transparent 51%) 0 0/130px 130px,#2a3142}
+.river{position:absolute;width:120%;height:80px;left:-10%;top:47%;background:#1f5d78;transform:rotate(-9deg);border-top:2px solid #2d7fa2;border-bottom:2px solid #2d7fa2;opacity:.85}
+.road{position:absolute;height:3px;background:rgba(255,255,255,.35);transform-origin:left}
+.r1{left:4%;top:20%;width:75%;transform:rotate(18deg)}.r2{left:23%;top:82%;width:72%;transform:rotate(-22deg)}.r3{left:35%;top:5%;width:55%;transform:rotate(62deg)}
+.poly{position:absolute;left:33%;top:22%;width:39%;height:48%;background:rgba(0,158,203,.3);border:3px solid var(--primary);clip-path:polygon(9% 17%,58% 4%,91% 27%,78% 84%,44% 96%,14% 75%)}
+.maplabel{position:absolute;left:36%;top:42%;background:var(--dark);border:1px solid var(--secondary);padding:6px 9px;border-radius:4px;font-size:11px;font-weight:700;color:#fff}
+.map-controls{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:5px}.map-controls button{width:31px;height:31px;border:1px solid var(--secondary);background:var(--dark);color:#fff;border-radius:4px}
+.map-footer{position:absolute;left:10px;bottom:8px;background:rgba(29,33,50,.9);font-size:10px;padding:4px 6px;color:var(--muted)}
+.maptools{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+/* Botones Bootstrap */
+.btn{border:1px solid var(--secondary);background:var(--secondary);color:#fff;padding:4px 8px;border-radius:3.2px;font-size:14px;font-weight:400;line-height:1.5}
+.btn.primary{background:var(--primary);border-color:var(--primary)}.btn.secondary{background:var(--primary);border-color:var(--primary);padding:6px 12px;font-size:16px}
+.btn:hover{filter:brightness(1.1)}
+
+/* Pestañas (nav-tabs SIMBIO) */
+.dimtabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--secondary);padding:0 20px}
+.tab{padding:8px 16px;font-size:14px;color:var(--primary);background:transparent;border:1px solid transparent;border-bottom:0;border-radius:4px 4px 0 0;margin-bottom:-1px}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.dim{display:none}.dim.active{display:block}
+
+.dimension-banner{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px 14px;margin-bottom:14px}
+.dimension-number{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.dimension-banner strong{display:block;color:#fff;font-size:15px;font-weight:500}.dimension-banner small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.category-card{border:1px solid var(--line);border-radius:4px;margin:0 0 13px;padding:16px 18px}
+.category-head{display:flex;align-items:center;gap:9px;color:#fff;font-size:15px;font-weight:500;margin-bottom:13px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.category-head span{font-size:10px;font-weight:700;color:#fff;background:var(--secondary);padding:3px 6px;border-radius:3px}
+.category-card .info{margin-bottom:13px}
+.category-description{font-size:13px;color:var(--muted);line-height:1.45;margin:-4px 0 14px}
+.subsection-title{font-size:14px;font-weight:500;color:#fff;margin:18px 0 9px;padding-top:12px;border-top:1px solid var(--line)}
+
+.choice-row{display:flex;gap:8px;flex-wrap:wrap}
+.choice{border:1px solid var(--secondary);border-radius:3.2px;padding:6px 12px;font-size:14px;background:transparent;color:#fff}
+.choice.selected{background:var(--primary);border-color:var(--primary)}
+.checkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.check{border:1px solid var(--line);border-radius:3.2px;padding:8px 10px;font-size:13px;display:flex;gap:8px;align-items:center;color:#fff}
+.check input{width:auto;accent-color:var(--primary)}
+
+table{width:100%;border-collapse:collapse;font-size:14px;color:#fff}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--secondary);vertical-align:middle}
+th{font-weight:700;border-bottom-width:2px}
+td select{padding:3px 6px;font-size:13px}
+
+.footer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:18px}.right-actions{display:flex;gap:8px}
+.footer-actions .btn{padding:6px 12px;font-size:16px}
+.toast{position:fixed;right:24px;bottom:24px;background:var(--dark);border:1px solid var(--secondary);color:#fff;padding:12px 16px;border-radius:4px;box-shadow:0 .5rem 1rem rgba(0,0,0,.3);display:none;font-size:13px;z-index:20}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.metric{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px}
+.metric strong{display:block;font-size:20px;font-weight:500;color:#fff}.metric span{font-size:11px;color:var(--muted)}
+.review{border-left:4px solid var(--success);padding:10px 13px;background:var(--panel);margin:8px 0;font-size:13px;border-radius:0 4px 4px 0}
+.review.warn{border-left-color:var(--warning)}
+.hidden{display:none!important}
+
+/* Pie SIMBIO */
+.site-footer{background:var(--darker);color:#fff;padding:20px 0 10px;margin-top:40px;font-size:13px}
+.site-footer .inner{max-width:1140px;margin:0 auto;padding:0 16px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.site-footer .inner p{margin:0;line-height:1.6}.site-footer .mini{color:#6d6d6d;font-size:12px;text-align:right}
+
+@media(max-width:900px){.grid,.grid.three{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.stepper{overflow:auto}.navbar-inner .nl:not(.active){display:none}.navsearch input{width:130px}.brandbar{flex-direction:column;gap:6px}.brandbar h3{font-size:20px}.pagehead .back{position:static;display:inline-block;margin-top:6px}}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <div class="brand-block">
-    <div class="brand-title">PLATAFORMA POLÍTICAS DE LA BIODIVERSIDAD</div>
-  </div>
-  <nav class="topnav">
-    <span>Inicio</span><span>Temáticas</span><span>Geoportal</span><span>Indicadores</span><span>Acerca de</span>
-  </nav>
-  <div class="search-top"><input placeholder="Ingrese sus términos..."><button>⌕</button></div>
-  <div class="login-top"><span class="toggle"></span><span>Ingresar</span></div>
+<div class="brandbar">
+  <a href="https://simbio.mma.gob.cl/"><img src="https://simbio.mma.gob.cl/Img/Asset_02.png" alt="Ministerio del Medio Ambiente"></a>
+  <h3>PLATAFORMA POLITICAS DE LA BIODIVERSIDAD</h3>
 </div>
-<div class="header">
-  <div class="header-inner">
-    <div class="crumb">Inicio &nbsp;›&nbsp; Temáticas &nbsp;›&nbsp; Restauración Ecológica</div>
-    <h1>Restauración Ecológica</h1>
-    <p>Registro de iniciativas de restauración ecológica y seguimiento de sus resultados</p>
+<div class="navbar"><div class="navbar-inner">
+  <a class="nl" href="#">Inicio</a><a class="nl dd active" href="#">Temáticas</a><a class="nl" href="#">Geoportal</a><a class="nl" href="#">Indicadores</a><a class="nl" href="#">Ayuda</a>
+  <div class="navsearch"><input placeholder="Ingrese sus términos..."><button>⌕</button></div>
+  <span class="navicon">☾</span><a class="nl" href="#">Ingresar</a>
+</div></div>
+<div class="container">
+  <div class="pagehead">
+    <h1>Registro de iniciativa de Restauración Ecológica</h1>
+    <p>Ficha de registro · Iniciativa → Unidades de Restauración (UR) → Eventos de monitoreo</p>
+    <a class="back" href="#" onclick="toast('Volvería al listado de Restauración Ecológica');return false">Volver</a>
   </div>
-</div>
-<div class="wrap">
+  <div class="alert-info">Esta es una maqueta navegable del módulo de Restauración Ecológica propuesto en el Producto 2. Los datos son de ejemplo; los campos marcados con ⚙ se calculan por geoproceso y la validación institucional ocurre antes de publicar.</div>
+
   <div class="levelbar"><b>Nivel de la ficha</b><div class="seg"><button id="lv1" class="on" onclick="setLevel(1)">Nivel 1 · Básico (obligatorio)</button><button id="lv2" onclick="setLevel(2)">Nivel 1 + Nivel 2 · Profundización</button></div><span>El Nivel 1 permite un registro rápido con la información indispensable; el Nivel 2 es facultativo y agrega profundidad técnica.</span></div>
   <div class="stepper">
     <div class="step active" data-step="1"><span class="n">1</span> Iniciativa</div><div class="sep"></div>
@@ -774,6 +788,10 @@ body.only-n1 .n2{display:none!important}
     </main>
   </div>
 </div>
+<footer class="site-footer"><div class="inner">
+  <p><b>Ministerio del Medio Ambiente</b><br>San Martín 73, Santiago, Chile<br>Recepción: (56-2) 257 35 600 · OIRS Subsecretaría: (56-2) 257 35 800</p>
+  <p class="mini">SIMBIO · Sistema de Información y Monitoreo de Biodiversidad<br>Maqueta · Módulo de Restauración Ecológica · Producto 2</p>
+</div></footer>
 
 <div class="toast" id="toast"></div>
 

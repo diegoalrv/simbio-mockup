@@ -240,6 +240,7 @@ td select{padding:3px 6px;font-size:13px}
         <div class="card">
           <div class="card-head"><div><h2>1. Identificación de la iniciativa</h2><p>Información del proyecto, programa o intervención.</p></div><span class="badge">Entidad: Iniciativa</span></div>
           <div class="card-body">
+            <div class="info" style="border-left-color:#f0ad4e"><b>Datos autodeclarados:</b> la información de esta ficha es declarada por el responsable de la iniciativa. SIMBIO no la verifica de forma independiente y la publica con la leyenda «Información autodeclarada, no validada por el MMA». Solo los campos calculados por geoproceso (⚙) provienen de capas oficiales.</div>
             <div class="info"><b>Diseño conceptual:</b> la Iniciativa es el nivel superior de gestión. La información ecológica y espacial del proyecto se registra en una o más Unidades de Restauración (UR).</div>
             <div class="grid">
               <div class="field"><label>Nombre resumido <span class="req">*</span></label><input id="nombre" value="Restauración Bosque Cerro Caracol"></div>
@@ -259,6 +260,8 @@ td select{padding:3px 6px;font-size:13px}
               <div class="field"><label>Estado de avance <span class="req">*</span></label><select><option>Planificada</option><option selected>En ejecución</option><option>Finalizada</option><option>Suspendida</option></select><div class="help">Estado de ejecución de la iniciativa. La completitud de la ficha se muestra en el paso 5.</div></div>
               <div class="field"><label>Alcance <span class="req">*</span></label><select id="alc" onchange="alcToggle()"><option>Proyecto individual</option><option selected>Parte de un programa</option></select><div class="help">Proyecto acotado, o intervención que forma parte de un programa o marco de restauración mayor.</div></div>
               <div class="field full" id="progBox" style="display:none"><label>Nombre del programa <span class="req">*</span></label><input value="Programa de restauración de paisajes costeros del Biobío" placeholder="Programa, estrategia o marco de restauración al que pertenece la iniciativa"></div>
+              <div class="field"><label>Escala de intervención <span class="req">*</span></label><select><option>Puntual · predio o sitio</option><option selected>Gran escala · paisaje, cuenca o territorio</option></select><div class="help">Distingue proyectos acotados (p. ej. un predio) de intervenciones a escala de paisaje.</div></div>
+              <div class="field full"><label>Enfoque(s) de la iniciativa <span class="req">*</span></label><div class="checkgrid"><label class="check"><input type="checkbox" checked> Restauración ecológica</label><label class="check"><input type="checkbox"> Regeneración natural</label><label class="check"><input type="checkbox"> Soluciones basadas en la Naturaleza (SbN)</label><label class="check"><input type="checkbox"> Prácticas productivas sustentables compatibles con la restauración</label><label class="check"><input type="checkbox" checked> Biodiversidad</label><label class="check"><input type="checkbox"> Servicios ecosistémicos</label></div><div class="help">Seleccione uno o más.</div></div>
               <div class="field n2"><label>Beneficiarios <span class="opt">opcional</span></label><textarea style="min-height:65px">Comunidades locales, organizaciones territoriales y propietarios del área de intervención.</textarea></div>
               <div class="field n2"><label>Tenencia / propiedad · regularización de predios <span class="opt">opcional</span></label><textarea style="min-height:65px">Mixta: terrenos municipales y predios privados con acuerdos de intervención.</textarea></div>
               
@@ -403,7 +406,8 @@ td select{padding:3px 6px;font-size:13px}
                     <input data-ecotipo value="Terrestre" disabled>
                     <div class="help">Derivado del módulo de referencia: terrestre, marino o humedal.</div>
                   </div>
-                  <div class="field full"><label>Ecosistema de referencia <span class="req">*</span></label><textarea style="min-height:60px" placeholder="Ecosistema nativo que sirve de modelo para la restauración.">Bosque esclerófilo costero maduro con dosel de peumo y boldo, sotobosque de quilo y helechos, sin presencia de especies exóticas invasoras.</textarea><div class="help">Ecosistema nativo que sirve de modelo para la restauración (atributos SER: especies, estructura, condiciones físicas, funciones, intercambios, amenazas).</div></div>
+                  <div class="field full"><label>Tipo de referencia <span class="req">*</span></label><select><option selected>Ecosistema nativo de referencia</option><option>Ecosistema nativo modificado, compatible con el uso actual</option><option>Sistema productivo sustentable (agroecosistema, silvopastoril, otro)</option><option>Ecosistema novedoso o híbrido</option><option>Otra condición de referencia</option></select><div class="help">Si no es posible ni deseable volver a un ecosistema nativo porque el sitio tiene otro uso, indique la condición que se toma como referencia.</div></div>
+                  <div class="field full"><label>Ecosistema o condición de referencia <span class="req">*</span></label><textarea style="min-height:60px" placeholder="Ecosistema nativo que sirve de modelo para la restauración.">Bosque esclerófilo costero maduro con dosel de peumo y boldo, sotobosque de quilo y helechos, sin presencia de especies exóticas invasoras.</textarea><div class="help">Ecosistema o condición que sirve de modelo para la intervención (atributos SER: especies, estructura, condiciones físicas, funciones, intercambios, amenazas).</div></div>
                   <div class="field full n2"><label>Estado objetivo <span class="opt">opcional</span></label><textarea style="min-height:60px" placeholder="Condición esperada al término de la iniciativa."></textarea><div class="help">Condición que la iniciativa espera alcanzar en su horizonte de ejecución. Puede ser un estado intermedio respecto del ecosistema de referencia.</div></div>
                   <div class="field full"><div class="subsection-title" style="margin-top:6px">Atributos del ecosistema de referencia (estándar SER)</div></div>
                   <div class="field">
@@ -466,11 +470,26 @@ td select{padding:3px 6px;font-size:13px}
               </div>
 
               <div class="category-card">
+                <div class="category-head"><span>MARCO</span><strong>Marco de planificación <span class="opt">opcional</span></strong></div>
+                <div class="grid">
+                  <div class="field"><label>La UR es parte de</label><select><option>Ninguno · intervención independiente</option><option selected>Plan de Restauración</option><option>Paisaje de Conservación</option><option>Área Protegida</option><option>Otra iniciativa areal planificada</option></select></div>
+                  <div class="field"><label>Nombre del plan, paisaje, área u otra iniciativa</label><input placeholder="Ej.: Plan de Restauración de Paisajes del Biobío"></div>
+                </div>
+              </div>
+
+              <div class="category-card">
                 <div class="category-head"><span>OBJETO</span><strong>Objeto de restauración <span class="req">*</span></strong></div>
                 <div class="choice-row" id="objRow" role="group" aria-label="Objeto de restauración">
                   <button class="choice">Especies</button>
                   <button class="choice selected">Ecosistemas</button>
                   <button class="choice">Servicios ecosistémicos</button>
+                  <button class="choice">Biodiversidad</button>
+                  <button class="choice">Hábitats</button>
+                  <button class="choice">Paisaje / mosaico territorial</button>
+                  <button class="choice">Cuencas y recursos hídricos</button>
+                  <button class="choice">Suelos</button>
+                  <button class="choice">Sistemas productivos</button>
+                  <button class="choice">Otro</button>
                 </div>
                 <div id="svcBlock" style="display:none;margin-top:12px">
                   <div class="help" style="margin:0 0 4px">Listado tentativo basado en CICES — se reemplazará por la lista entregada por la contraparte. Se presenta un listado resumido por categoría; la versión definitiva permitirá selección agregada o desagregada.</div>
@@ -820,6 +839,7 @@ td select{padding:3px 6px;font-size:13px}
               <div class="metric"><strong data-count="act">3</strong><span>Actividades</span></div>
               <div class="metric"><strong data-count="ev">3</strong><span>Eventos</span></div>
             </div>
+            <div class="info" style="border-left-color:#f0ad4e">Al enviar, declaro que la información es veraz. Se publicará como <b>autodeclarada</b>, sin verificación independiente por parte del MMA.</div>
             <div class="review">✓ Identificación de iniciativa completa.</div>
             <div class="review">✓ Polígono de UR definido y superficie calculada.</div>
             <div class="review">✓ Ecosistema de referencia, estrategia y causa de degradación definidos.</div>
